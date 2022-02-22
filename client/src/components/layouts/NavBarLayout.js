@@ -5,6 +5,7 @@ import Signup from '../auth/Signup'
 
 const NavBarLayout = props => {
   const [showModal, setShowModal] = useState(false)
+  
 
   return (
     <Fragment>
@@ -37,9 +38,9 @@ const NavBarLayout = props => {
         </Container>
       </Navbar>
       {showModal && (
-        <Signup
-          show={showModal}
-          onHide={() => setShowModal(false)}
+        <Signup  
+          showModal={showModal}
+          setShowModal={setShowModal}
          />
       )}
     </Fragment>

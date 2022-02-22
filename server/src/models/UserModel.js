@@ -1,10 +1,10 @@
 var db = require('../../config/db')
 const uuid = require('uuid').v4
 
-exports.createUser = ({firstName,lastName,email,encrypted,country},result) => {
+exports.createUser = ({registrationfirstName,registrationemail,encrypted},result) => {
     const id = uuid()
-    const sql = `insert into users(id,first_name, last_name, email, password, country) 
-                values('${id}','${firstName}','${lastName}','${email}','${encrypted}','${country}')`
+    const sql = `insert into users(id,first_name, email, password) 
+                values('${id}','${registrationfirstName}','${registrationemail}','${encrypted}')`
     db.query(sql,(err,res)=>{
         console.log(err)
         if(err){

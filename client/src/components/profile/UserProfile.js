@@ -73,7 +73,7 @@ const UserProfile = props => {
                 {arrGrid && arrGrid.map(arr => (
                     <Row>
                         {arr && arr.map(item => (
-                            <Col sm={3}>
+                            <Col>
                                 <Card.Body>
                                     <Card.Text>
                                         <Card style={{ width: '12rem' }}>

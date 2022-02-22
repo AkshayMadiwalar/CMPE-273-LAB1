@@ -5,19 +5,19 @@ const jwt = require('jsonwebtoken')
 const config = require('../../config/constants')
 const bcrypt = require('bcrypt')
 
-exports.createUser = (req, res) => {
-    const { firstName, lastName, email, password, country } = req.body
-    console.log(firstName, lastName, email, password, country)
+exports.createUser = async (req, res) => {
+    const { registrationfirstName, registrationemail, registrationpassword } = req.body
+    console.log(registrationemail," ---------------------")
     try {
-        UserModel.findByEmail({ email }, async (err, data) => {
+        UserModel.findByEmail({ email:registrationemail }, async (err, data) => {
             if (err) res.status(500).json({ message: "Server error" })
 
             if (data.length > 0) {
                 return res.status(400).json({ message: "User exists" })
             }
             const salt = await bcrypt.genSalt(10)
-            const encrypted = await bcrypt.hash(password, salt)
-            UserModel.createUser({ firstName, lastName, email, encrypted, country }, (err, data) => {
+            const encrypted = await bcrypt.hash(registrationpassword, salt)
+            UserModel.createUser({ registrationfirstName, registrationemail, encrypted }, (err, data) => {
                 const payload = {
                     user: {
                         id: data
