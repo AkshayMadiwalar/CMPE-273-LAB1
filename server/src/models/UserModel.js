@@ -26,6 +26,17 @@ exports.findByEmail = ({email},result) => {
     })
 }
 
+exports.findById = ({id},result) => {
+    const sql = `select * from users where id = '${id}'`
+    db.query(sql,(err,res)=>{
+        if(err){
+            result(err,null)
+        }else{
+            result(null,res)
+        }
+    })
+}
+
 exports.updateUser = ({
         id,
         firstName,

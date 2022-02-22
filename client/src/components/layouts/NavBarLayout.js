@@ -1,11 +1,23 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Navbar, Nav, NavDropdown, Container, InputGroup, FormControl, Form, Button } from 'react-bootstrap'
 import Signup from '../auth/Signup'
+import axios from 'axios'
 
 const NavBarLayout = props => {
   const [showModal, setShowModal] = useState(false)
-  
+
+  const [loggedIn, setLoggedIn] = useState(false)
+
+  useEffect(async () => {
+    const user = await axios.post("/users/auth")
+    if (user.data) {
+      //LoggedIN
+      setLoggedIn(true)
+    } else {
+      setLoggedIn(false)
+    }
+  }, [])
 
   return (
     <Fragment>
@@ -29,19 +41,32 @@ const NavBarLayout = props => {
               style={{ maxHeight: '100px' }}
               navbarScroll
             >
-              <Nav.Link href="#action1"><i class="fa fa-heart" aria-hidden="true"></i></Nav.Link>
-              <Nav.Link href="#action2"><i class="fa fa-user-circle" aria-hidden="true"></i></Nav.Link>
+
+              {loggedIn && (
+                <>
+                  <Nav.Link href="#action1"><i class="fa fa-heart" aria-hidden="true"></i></Nav.Link>
+                  <Nav.Link href="#action2"><i class="fa fa-user-circle" aria-hidden="true"></i></Nav.Link>
+                </>
+              )}
+
               <Nav.Link href="#action2"><i class="fa fa-shopping-cart" aria-hidden="true"></i></Nav.Link>
             </Nav>
-            <Button variant="warning" onClick={()=>setShowModal(true)}>Login</Button>
+            {!loggedIn && (
+              <Button variant="warning" onClick={() => setShowModal(true)}>Login</Button>
+            )}
+
+            {loggedIn && (
+              <Button variant="warning" >Logout</Button>
+            )}
+
           </Navbar.Collapse>
         </Container>
       </Navbar>
       {showModal && (
-        <Signup  
+        <Signup
           showModal={showModal}
           setShowModal={setShowModal}
-         />
+        />
       )}
     </Fragment>
 

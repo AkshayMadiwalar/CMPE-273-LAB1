@@ -41,5 +41,16 @@ exports.login = (req, res) => {
     } catch (error) {
         return res.status(500).json({message:"Server error"})
     }
+}
 
+exports.getUserDetails = (req,res) => {
+    const id = req.user.id
+    UserModel.findById({id},(err,data)=>{
+        if(err) return res.status(500).json({message:"Server error"})
+        if(data.length > 0){
+            const user = data[0]
+            return res.json(user)
+        }
+        return res.status(500).json({message:"No User found"})
+    })
 }

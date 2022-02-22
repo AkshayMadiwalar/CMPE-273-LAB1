@@ -6,7 +6,11 @@ import UserProfile from './components/profile/UserProfile';
 import EditProfile from './components/profile/EditProfile';
 import NameYourShop from './components/shop/NameYourShop';
 import Shop from './components/shop/Shop';
+import setAuthToken from './components/utils/setAuthToken';
 
+if (localStorage.userdetails) {
+  setAuthToken(localStorage.userdetails)
+}
 
 function App() {
   return (
