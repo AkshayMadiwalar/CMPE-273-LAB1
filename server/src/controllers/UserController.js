@@ -131,7 +131,7 @@ exports.searchFavorite = (req,res) => {
             }
             return res.status(404).json({message:"Product does not exist!"})
         })
-    } catch (error) {
-        
+    } catch (error){
+        return res.status(500).json({message:"Server error: "+error})
     }
 }
