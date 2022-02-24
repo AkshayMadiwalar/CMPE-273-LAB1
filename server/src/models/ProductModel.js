@@ -1,10 +1,10 @@
 var db = require('../../config/db')
 const uuid = require('uuid').v4
 
-exports.createProduct = ({sellerId,name,category,description,price,quantity},result) => {
+exports.createProduct = ({sellerId,name,category,description,price,quantity,img},result) => {
     const id = uuid()
-    const sql = `insert into products(product_id,seller_id,product_name,category,description,price,quantity)
-                values('${id}','${sellerId}','${name}','${category}','${description}','${price}','${quantity}')`
+    const sql = `insert into products(product_id,seller_id,product_name,category,description,price,quantity,img)
+                values('${id}','${sellerId}','${name}','${category}','${description}','${price}','${quantity}','${img}')`
     db.query(sql,(err,res)=>{
         if(err){
             result(err,null)

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Navbar, Nav, NavDropdown, Container, InputGroup, FormControl, Form, Button } from 'react-bootstrap'
 import Signup from '../auth/Signup'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 const NavBarLayout = props => {
   const [showModal, setShowModal] = useState(false)
@@ -45,7 +46,18 @@ const NavBarLayout = props => {
               {loggedIn && (
                 <>
                   <Nav.Link href="#action1"><i class="fa fa-heart" aria-hidden="true"></i></Nav.Link>
-                  <Nav.Link href="#action2"><i class="fa fa-user-circle" aria-hidden="true"></i></Nav.Link>
+
+                  <NavDropdown title={(<i class="fa fa-shopping-bag" aria-hidden="true"></i>)} id="basic-nav-dropdown">
+                    <NavDropdown.Item href="#action/3.1"><Link to="/shop"><span>Sell on Etsy</span></Link></NavDropdown.Item>
+                  </NavDropdown>
+
+                  
+                  <NavDropdown title={(<i class="fa fa-user-circle" aria-hidden="true"></i>)} id="basic-nav-dropdown">
+                    <NavDropdown.Item href="#action/3.1"><Link to="/profile"><span>My Profile</span></Link></NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.2">My Purchases</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item href="#action/3.4">Sign out</NavDropdown.Item>
+                  </NavDropdown>
                 </>
               )}
 

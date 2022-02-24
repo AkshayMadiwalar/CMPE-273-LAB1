@@ -7,6 +7,7 @@ import EditProfile from './components/profile/EditProfile';
 import NameYourShop from './components/shop/NameYourShop';
 import Shop from './components/shop/Shop';
 import setAuthToken from './components/utils/setAuthToken';
+import { ToastContainer } from 'react-bootstrap';
 
 if (localStorage.userdetails) {
   setAuthToken(localStorage.userdetails)
@@ -15,12 +16,13 @@ if (localStorage.userdetails) {
 function App() {
   return (
     <Fragment>
+      <ToastContainer position='top-center'/>
       <NavBarLayout />
       <Routes>
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/profile/edit" element={<EditProfile/>}/>
           <Route path="/shop" element={<NameYourShop/>}/>
-          <Route path="/shop/home" element={<Shop />} />
+          <Route path="/shop/:name/home" element={<Shop />} />
         </Routes>
 
     </Fragment>
