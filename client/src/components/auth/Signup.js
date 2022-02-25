@@ -69,6 +69,7 @@ const Signup = ({ showModal, setShowModal }) => {
                 toast.success("Loggedin",{
                     position: "top-center",
                 })
+                window.location.reload(false)
             }
         } catch (error) {
             setShowModal(false)

@@ -6,40 +6,57 @@ import { useParams } from 'react-router-dom'
 import EditShop from './EditShop'
 import axios from 'axios'
 import AddItem from './AddItem'
+import { Link } from 'react-router-dom'
+import EditItem from './EditItem'
 
 const Shop = () => {
 
     const [shopName, setShopName] = useState("")
     const [editShop, setEditShop] = useState(false)
-    const [addItem,setAddItem] = useState(false)
-
+    const [addItem, setAddItem] = useState(false)
+    const [editItem,setEditItem] = useState(false)
+    const [itemToEdit,setItemToEdit] = useState({})
     const [shop, setShop] = useState({})
     const params = useParams()
+
+    const [arrGrid, setArrGrid] = useState([])
 
     useEffect(async () => {
         setShopName(params.name)
         const n = params.name
         const res = await axios.post("/shop/byname", { name: n })
+        const sellerId = res.data.seller_id
+        const { data } = await axios.post("/shop/getItems", { sellerId })
         setShop(res.data)
+        var grid = []
+        for (var i = 0; i < data.length; i = i + 3) {
+            var ar = []
+            console.log(data[i])
+            if (data[i]) {
+                ar.push(data[i])
+            }
+            if (data[i + 1]) {
+                ar.push(data[i + 1])
+            }
+            if (data[i + 2]) {
+                ar.push(data[i])
+            }
+            grid.push(ar)
+        }
+        console.log(grid)
+        setArrGrid(grid)
     }, [])
 
-    const arr = [1, 2, 3, 4, 5, 6, 7]
+    console.log(arrGrid)
 
-    var arrGrid = []
 
-    for (var i = 0; i < arr.length; i = i + 3) {
-        var ar = []
-        if (arr[i]) {
-            ar.push(arr[i])
-        }
-        if (arr[i + 1]) {
-            ar.push(arr[i + 1])
-        }
-        if (arr[i + 2]) {
-            ar.push(arr[i])
-        }
-        arrGrid.push(ar)
+
+    const onEditItem = (item) => {
+        setEditItem(true)
+        setItemToEdit(item)
     }
+
+
 
     return (
         <Fragment>
@@ -49,7 +66,7 @@ const Shop = () => {
                         <Card.Body>
                             <Row>
                                 <Col sm={2}>
-                                    <Image rounded width={150} height={120} src={defaultShop} />
+                                    <Image rounded width={150} height={120} src={shop.img ? shop.img : defaultShop} />
                                 </Col>
                                 <Col sm={3}>
                                     <Row><h4>{shopName}</h4></Row>
@@ -81,33 +98,35 @@ const Shop = () => {
                                     />
                                     <br />
                                     <Button style={{ width: "100%", textAlign: "left" }} variant="outline-secondary">All</Button>
-                                    <br/>
                                     <br />
-                                    <Button style={{ width: "100%", textAlign: "left" }} variant="warning" onClick={(e)=>setAddItem(true)}>Add new Item</Button>
-              
-                                    <br/>
+                                    <br />
+                                    <Button style={{ width: "100%", textAlign: "left" }} variant="warning" onClick={(e) => setAddItem(true)}>Add new Item</Button>
+
+                                    <br />
                                     <hr />
                                     <span style={{ fontWeight: 'lighter' }}>0 Sales (Total)</span>
                                 </Col>
                                 <Col sm={9}>
-                                    {arrGrid && arrGrid.map(arr => (
+                                    {arrGrid && arrGrid.length > 0 && arrGrid.map(arr => (
                                         <Row>
                                             {arr && arr.map(item => (
                                                 <Col sm={3}>
-                                                    <Card.Body>
-                                                        <Card.Text>
-                                                            <Card style={{ width: '10rem' }}>
-                                                                <Card.Img variant="top" width={70} height={75} src={defaultShop} />
-                                                                <Card.Body>
-                                                                    <Card.Title>Item Name</Card.Title>
-                                                                    <Card.Text>
-                                                                        Price, In Stock
-                                                                    </Card.Text>
-                                                                    {/* <Button variant="primary">Go somewhere</Button> */}
-                                                                </Card.Body>
-                                                            </Card>
-                                                        </Card.Text>
-                                                    </Card.Body>
+                                    
+                                                            <Card.Body onClick={()=>onEditItem(item)}>
+                                                                <Card.Text>
+                                                                    <Card style={{ width: '13rem', height: '13rem' }}>
+                                                                        <Card.Img variant="top" width={70} height={100} src={item.img} />
+                                                                        <Card.Body>
+                                                                            <Card.Title><span style={{ fontWeight: 'bold' }}>{item.product_name}</span> | <span style={{ fontWeight: 'lighter' }}>{item.category}</span></Card.Title>
+                                                                            <Card.Text>
+                                                                                $ {item.price} | {item.quantity > 0 ? (<span style={{ fontWeight: 'lighter' }}>{item.quantity} available</span>) : (<span style={{ fontWeight: 'lighter', color: 'red' }}>Out of Stock</span>)}
+                                                                            </Card.Text>
+                                                                            {/* <Button variant="primary">Go somewhere</Button> */}
+                                                                        </Card.Body>
+                                                                    </Card>
+                                                                </Card.Text>
+                                                            </Card.Body>
+                                                
                                                 </Col>
                                             ))}
                                         </Row>
@@ -124,11 +143,17 @@ const Shop = () => {
                         shop={shop}
                     />
 
-                    <AddItem 
+                    <AddItem
                         addItem={addItem}
                         setAddItem={setAddItem}
                         sellerId={shop.seller_id}
                         shop={shop}
+                    />
+
+                    <EditItem 
+                        editItem={editItem}
+                        setEditItem={setEditItem}
+                        item = {itemToEdit}
                     />
                 </>
             )}

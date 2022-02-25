@@ -4,11 +4,14 @@ import { Navbar, Nav, NavDropdown, Container, InputGroup, FormControl, Form, But
 import Signup from '../auth/Signup'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const NavBarLayout = props => {
   const [showModal, setShowModal] = useState(false)
 
   const [loggedIn, setLoggedIn] = useState(false)
+
+  toast.configure()
 
   useEffect(async () => {
     const user = await axios.post("/users/auth")
@@ -19,6 +22,14 @@ const NavBarLayout = props => {
       setLoggedIn(false)
     }
   }, [])
+
+  const logout = (e) => {
+    e.preventDefault()
+    window.localStorage.setItem("userdetails","")
+    setLoggedIn(false)
+    window.location.reload(false)
+    toast.success("Logged Out")
+  }
 
   return (
     <Fragment>
@@ -68,7 +79,7 @@ const NavBarLayout = props => {
             )}
 
             {loggedIn && (
-              <Button variant="warning" >Logout</Button>
+              <Button variant="warning" onClick={(e)=>logout(e)}>Logout</Button>
             )}
 
           </Navbar.Collapse>

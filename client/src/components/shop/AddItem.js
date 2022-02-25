@@ -71,7 +71,6 @@ const AddItem = ({ addItem, setAddItem, sellerId, shop }) => {
 
     const onUploadFile = async (e) => {
         setImg([e.target.files[0]])
-        console.log(e.target.files[0])
     }
 
 

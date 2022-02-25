@@ -14,9 +14,9 @@ exports.createSeller = (req,res) => {
 }
 
 exports.updateShop = (req,res) => {
-    const {sellerId,name,ownerName,email,phNumber} = req.body
+    const {sellerId,name,ownerName,email,phNumber,img} = req.body
     try {
-        SellerModel.updateSeller({sellerId,name,ownerName,email,phNumber},(err,data)=>{
+        SellerModel.updateSeller({sellerId,name,ownerName,email,phNumber,img},(err,data)=>{
             console.log(err)
             if(err) return res.status(500).json({message:"Server error: "+err})
             if(data){

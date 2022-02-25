@@ -1,8 +1,10 @@
 import axios from 'axios'
 import React, { Fragment, useEffect, useState } from 'react'
-import { Modal, Button, Card, Row, Col, Form } from 'react-bootstrap'
+import { Modal, Button, Card, Row, Col, Form, Image } from 'react-bootstrap'
 import { Navigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import defaultShopImg from './../../images/defaultShop.png'
+import {s3,bucketName} from './../../aws-config/aws.js'
 
 const EditShop = ({ editShop, setEditShop, shopName, shop }) => {
 
@@ -10,34 +12,64 @@ const EditShop = ({ editShop, setEditShop, shopName, shop }) => {
 
     const [updateFormData, setUpdateFormData] = useState({})
 
-    useEffect(()=>{
-        setUpdateFormData(shop)
-    },[shop])
+    const [img,setImg] = useState()
 
-    console.log(shop,updateFormData)
+    useEffect(() => {
+        setUpdateFormData(shop)
+    }, [])
+
+    console.log(shop, updateFormData)
 
     const updateShop = async (e) => {
         e.preventDefault()
         try {
+            const imageName = `shops/${updateFormData.name}/profile/${updateFormData.name}.jpg`
+            console.log(imageName)
+            const params = {
+                Bucket: bucketName,
+                Key: imageName,
+                Expires: 60,
+                ContentType: 'image/*'
+            }
+            console.log(img)
+            const uploadUrl = await s3.getSignedUrlPromise('putObject', params)
+            await fetch(new Request(uploadUrl, {
+                method: "PUT",
+                body: img[0],
+                headers: new Headers({
+                    "Content-Type": 'image/*',
+                })
+            }))
+            const imageUrl = uploadUrl.split('?')[0]
+            console.log(imageUrl)
             console.log(updateFormData)
-            const res = await axios.post("/shop/update", 
-                {   name:updateFormData.name,
-                    email:updateFormData.email,
-                    ownerName:updateFormData.owner_name,
-                    phNumber:updateFormData.ph_number,
-                    sellerId:updateFormData.seller_id
+            const res = await axios.post("/shop/update",
+                {
+                    name: updateFormData.name,
+                    email: updateFormData.email,
+                    ownerName: updateFormData.owner_name,
+                    phNumber: updateFormData.ph_number,
+                    sellerId: updateFormData.seller_id,
+                    img: imageUrl
                 })
             console.log(res)
             if (res.data) {
                 toast.success("Shop Updated")
                 setEditShop(false)
                 setUpdated(true)
+                window.location.reload(false)
             }
         } catch (error) {
             console.log(error)
             toast("Failed to update shop, Try again!")
         }
     }
+
+    const onUploadFile = (e) => {
+        e.preventDefault()
+        setImg([e.target.files[0]])
+    }
+
 
     toast.configure()
     if (updated) {
@@ -76,7 +108,17 @@ const EditShop = ({ editShop, setEditShop, shopName, shop }) => {
                                     </Col>
                                 </Row>
                                 <Row>
-
+                                    <Col sm={4}>
+                                        <Image rounded width={100} height={105} src={shop.img ? shop.img : defaultShopImg} />
+                                    </Col>
+                                    <Col sm={5}>
+                                        <Form.Group controlId="formFile" className="mb-3">
+                                            <Form.Label>Upload a new picture</Form.Label>
+                                            <Form.Control type="file"
+                                                onChange={(e) => onUploadFile(e)}
+                                            />
+                                        </Form.Group>
+                                    </Col>
                                 </Row>
                             </Card.Body>
                         </Card>
