@@ -6,9 +6,12 @@ import homedecor from './../../images/homedecor.jpg'
 import art from './../../images/art.jpg'
 import entertainment from './../../images/entertainment.jpg'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const Dashboard = () => {
     const [products, setProducts] = useState([])
+
+    const [favorites, setFavorites] = useState([])
 
     useEffect(async () => {
         const { data } = await axios.get('/dashboard/products')
@@ -34,11 +37,34 @@ const Dashboard = () => {
     }, [])
 
     const addToFavorites = async (product) => {
-        console.log(product)
-        const token = window.localStorage.getItem("userdetails")
-        const {data} = await axios.post("/users/auth",{token})
-        const res = await axios.post("/users/add-to-favorites",{id:data.id,productId:product.product_id})
-        console.log(res.data)
+        if (favorites.indexOf(product.product_id) > -1) {
+            //Remove from favorites
+            var fav = [...favorites]
+            const index = fav.indexOf(product.product_id)
+            if (index != -1) {
+                try {
+                    const token = window.localStorage.getItem("userdetails")
+                    const { data } = await axios.post("/users/auth", { token })
+                    const res = await axios.post("/users/remove-from-favorites", { id: data.id, productId: product.product_id })
+                    if (res.data) {
+                        fav.splice(index, 1)
+                        setFavorites(fav)
+                    }
+                } catch (error) {
+                    toast("Failed to remove from Favorites")
+                }
+            }
+        } else {
+            //Add to favorites
+            try {
+                const token = window.localStorage.getItem("userdetails")
+                const { data } = await axios.post("/users/auth", { token })
+                const res = await axios.post("/users/add-to-favorites", { id: data.id, productId: product.product_id })
+                setFavorites([...favorites, product.product_id])
+            } catch (error) {
+                toast("Failed to add to favorites")
+            }
+        }
     }
 
     return (
@@ -103,18 +129,36 @@ const Dashboard = () => {
                                                     <Col cm={5}>{product.product_name}</Col>
                                                     <Col sm={5}><span style={{ textAlign: 'right' }}>${product.price}</span></Col>
                                                     <Col sm={2}>
-                                                        <OverlayTrigger
-                                                            placement="bottom"
-                                                            overlay={<Tooltip id="button-tooltip-2">Add to favorites</Tooltip>}
-                                                        >
-                                                            <Button
-                                                                variant="light"
-                                                                className="d-inline-flex align-items-center"
-                                                                onClick={()=>addToFavorites(product)}
+                                                        {favorites.includes(product.product_id) ? (
+                                                            <OverlayTrigger
+                                                                placement="bottom"
+                                                                overlay={<Tooltip id="button-tooltip-2">Remove From favorites</Tooltip>}
                                                             >
-                                                                <i style={{ color: 'lightgrey' }} className="fa fa-heart"  aria-hidden="true"></i>
-                                                            </Button>
-                                                        </OverlayTrigger>
+                                                                <Button
+                                                                    variant="light"
+                                                                    className="d-inline-flex align-items-center"
+                                                                    onClick={() => addToFavorites(product)}
+                                                                >
+                                                                    <i style={{ color: 'red' }} className="fa fa-heart" aria-hidden="true"></i>
+                                                                </Button>
+                                                            </OverlayTrigger>
+                                                        ) :
+                                                            (
+                                                                <OverlayTrigger
+                                                                    placement="bottom"
+                                                                    overlay={<Tooltip id="button-tooltip-2">Add to favorites</Tooltip>}
+                                                                >
+                                                                    <Button
+                                                                        variant="light"
+                                                                        className="d-inline-flex align-items-center"
+                                                                        onClick={() => addToFavorites(product)}
+                                                                    >
+                                                                        <i style={{ color: 'lightgrey' }} className="fa fa-heart" aria-hidden="true"></i>
+                                                                    </Button>
+                                                                </OverlayTrigger>
+                                                            )
+                                                        }
+
                                                     </Col>
                                                 </Row>
                                                 <Row>

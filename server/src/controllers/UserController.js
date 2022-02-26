@@ -121,6 +121,20 @@ exports.addToFavorites = (req, res) => {
     }
 }
 
+exports.removeFromFavorites = (req,res) => {
+    const {id,productId} = req.body
+    try {
+        FavoritesModel.remove({id,productId},(err,data)=>{
+            if(err) 
+                return res.status(500).json({message:"Server Error"})
+            if(data)
+                return res.json(data)
+        })
+    } catch (error) {
+        return res.status(500).json({message:"Server error"})
+    }
+}
+
 exports.searchFavorite = (req,res) => {
     const id = req.params.id
     const productId = req.params.productId
