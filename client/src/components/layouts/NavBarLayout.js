@@ -64,8 +64,9 @@ const NavBarLayout = props => {
 
                   
                   <NavDropdown title={(<i class="fa fa-user-circle" aria-hidden="true"></i>)} id="basic-nav-dropdown">
-                    <NavDropdown.Item href="#action/3.1"><Link to="/profile"><span>My Profile</span></Link></NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">My Purchases</NavDropdown.Item>
+                    <NavDropdown.Item ><Link to="/profile"><span>My Profile</span></Link></NavDropdown.Item>
+                    <NavDropdown.Item >My Purchases</NavDropdown.Item>
+                    <NavDropdown.Item ><Link to="/shop/myShops"><span>My Shops</span></Link></NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item href="#action/3.4">Sign out</NavDropdown.Item>
                   </NavDropdown>

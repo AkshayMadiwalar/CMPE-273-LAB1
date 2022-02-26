@@ -1,8 +1,8 @@
 var db = require('../../config/db')
 
-exports.add = ({id,productId,sellerId,category,productName,description,price,quantity},result) => {
-    const sql = `insert into favorites(id, product_id,seller_id,category,product_name,description,price,quantity)
-                values('${id}','${productId}','${sellerId}','${category}','${productName}','${description}','${price}','${quantity}')`
+exports.add = ({id,productId,sellerId,category,productName,description,price,quantity,img},result) => {
+    const sql = `insert into favorites(id, product_id,seller_id,category,product_name,description,price,quantity,img)
+                values('${id}','${productId}','${sellerId}','${category}','${productName}','${description}','${price}','${quantity}','${img}')`
     db.query(sql,(err,res)=>{
         if(err){
             result(err,null)

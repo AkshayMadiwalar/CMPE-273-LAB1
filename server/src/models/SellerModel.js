@@ -14,6 +14,17 @@ exports.createSeller = ({ownerId,name,email,phNumber,currency,city,country},resu
     })
 }
 
+exports.myShops = ({ownerId},result) => {
+    const sql = `select * from seller where owner_id = '${ownerId}'`
+    db.query(sql,(err,res)=>{
+        if(err){
+            result(err,null)
+        }else{
+            result(null,res)
+        }
+    })
+}
+
 exports.updateSeller = ({sellerId,name,ownerName,email,phNumber,img},result) => {
     const sql = `update seller set name = '${name}', owner_name='${ownerName}', email='${email}', ph_number='${phNumber}', img='${img}' where seller_id = '${sellerId}'`
     db.query(sql,(err,res)=>{

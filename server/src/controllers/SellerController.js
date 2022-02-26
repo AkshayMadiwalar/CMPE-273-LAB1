@@ -65,3 +65,17 @@ exports.getShopByName = (req,res) => {
         return res.status(500).json({message:"Server error"})
     }
 }
+
+exports.myShops = (req,res) => {
+    const {ownerId} = req.body
+    try {
+        SellerModel.myShops({ownerId},(err,data)=>{
+            if(err)
+                return res.status(500).json({message:"Server error"})
+            if(data)
+                return res.json(data)
+        })
+    } catch (error) {
+        return res.status(500).json({message:"Server error"})
+    }
+}

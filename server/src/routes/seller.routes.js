@@ -6,6 +6,7 @@ const ProductController = require('./../controllers/ProductController')
 const auth = require('../../middleware/auth')
 
 router.post('/add',auth,SellerController.createSeller)
+router.post('/myshops',auth,SellerController.myShops)
 router.post('/update',auth,SellerController.updateShop)
 router.post('/addItem',auth,ProductController.create)
 router.post('/updateItem',auth,ProductController.editProduct)

@@ -99,9 +99,11 @@ exports.addToFavorites = (req, res) => {
                             category: product.category,
                             description: product.description,
                             price: product.price,
-                            quantity: product.quantity
+                            quantity: product.quantity,
+                            img:product.img
                         }
                         FavoritesModel.add(favoritesData, (err, data) => {
+                            console.log(err)
                             if (err) return res.status(500).json({ message: "Serve error: " + err })
                             return res.json({ message: "Added to Favorites" })
                         })
@@ -114,6 +116,7 @@ exports.addToFavorites = (req, res) => {
             }
         })
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ message: "Server error" })
     }
 }

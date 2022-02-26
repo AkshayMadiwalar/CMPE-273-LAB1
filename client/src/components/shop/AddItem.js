@@ -62,6 +62,7 @@ const AddItem = ({ addItem, setAddItem, sellerId, shop }) => {
             if (res.data) {
                 toast.success("New Item added")
                 setAddItem(false)
+                window.location.reload(false)
             }
         } catch (error) {
                 toast("Failed to save new item!")

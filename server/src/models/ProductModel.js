@@ -16,13 +16,25 @@ exports.createProduct = ({sellerId,name,category,description,price,quantity,img}
 }
 
 exports.editProduct = ({productId,name,category,description,price,quantity,img},result) => {
-    const sql = `update products set product_name = '${name}', category='${category}', description = '${description}',
+    const sql = `update products set product_name = '${name}', category='${category}', description = "${description}",
                     price='${price}', quantity='${quantity}', img='${img}' where product_id = '${productId}'`
     db.query(sql,(err,res)=>{
+        console.log("--------------------",err)
         if(err){
             result(err,null)
         }
         else{
+            result(null,res)
+        }
+    })
+}
+
+exports.getAll = ({},result) => {
+    const sql = 'select * from products'
+    db.query(sql,(err,res)=>{
+        if(err){
+            result(err,null)
+        }else{
             result(null,res)
         }
     })

@@ -17,6 +17,7 @@ exports.editProduct = (req,res) => {
     try {
         console.log(productId,name,category,description,price,quantity,img)
         ProductModel.editProduct({productId,name,category,description,price,quantity,img},(err,data)=>{
+            console.log(err)
             if(err) return res.status(500).json({message:"Server error : \n"+ err})
             if(data)
                 return res.json({message:"Product updated"})
@@ -37,5 +38,16 @@ exports.getItems = (req,res) => {
         })
     } catch (error) {
         return res.status(500).json({message:"Server error"+error})
+    }
+}
+
+exports.getProducts = (req,res) => {
+    try {
+        ProductModel.getAll({},(err,data)=>{
+            if(err) return res.status(500).json({message:"Server Error"})
+            if(data)   return res.json(data)
+        })
+    } catch (error) {
+        return res.status(500).json({message:"Server error"})
     }
 }
