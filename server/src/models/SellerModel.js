@@ -57,3 +57,14 @@ exports.findyByShopName = ({name},result) => {
         }
     })
 }
+
+exports.findById = ({sellerId},result) => {
+    const sql = `select * from seller where seller_id = '${sellerId}'`
+    db.query(sql,(err,data)=>{
+        if(err){
+            result(err,null)
+        }else{
+            result(null,data[0])
+        }
+    })
+}

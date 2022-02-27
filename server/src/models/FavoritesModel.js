@@ -23,6 +23,17 @@ exports.remove = ({id,productId},result) => {
     })
 }
 
+exports.findbyId = ({id},result) => {
+    const sql = `select * from favorites where id = '${id}'`
+    db.query(sql,(err,res)=>{
+        if(err){
+            result(err,null)
+        }else{
+            result(null,res)
+        }
+    })
+}
+
 exports.findByIdAndProductId = ({id,productId},result) => {
     const sql =  `select * from favorites where id = '${id}' and product_id = '${productId}'`
     db.query(sql,(err,res)=>{

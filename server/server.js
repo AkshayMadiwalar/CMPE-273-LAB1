@@ -10,6 +10,7 @@ app.use(express.json({extended:false}))
 app.use('/users',require('./src/routes/user.routes'))
 app.use('/shop',require('./src/routes/seller.routes'))
 app.use('/dashboard',require('./src/routes/dashboard.routes'))
+app.use('/order',require('./src/routes/order.routes'))
 
 
 const PORT = 8585

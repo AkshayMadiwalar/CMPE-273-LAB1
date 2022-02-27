@@ -13,7 +13,16 @@ const Dashboard = () => {
 
     const [favorites, setFavorites] = useState([])
 
+    const [userId,setUserId] = useState()
+
     useEffect(async () => {
+        
+        //Set user id from access token stored in localstorage
+        const token = window.localStorage.getItem("userdetails")
+        const res = await axios.post("/users/auth", { token })
+        setUserId(res.data.id)
+
+        //Get all products
         const { data } = await axios.get('/dashboard/products')
         console.log(data)
         const grid = []
@@ -34,6 +43,16 @@ const Dashboard = () => {
             grid.push(ar)
         }
         setProducts(grid)
+
+
+        const fav = await axios.post('/users/myFavorites',{id:res.data.id})
+        console.log(fav.data)
+
+        var favItems = []
+        fav.data.map(item=>{
+            favItems.push(item.product_id)
+        })
+        setFavorites(favItems)
     }, [])
 
     const addToFavorites = async (product) => {
@@ -43,25 +62,24 @@ const Dashboard = () => {
             const index = fav.indexOf(product.product_id)
             if (index != -1) {
                 try {
-                    const token = window.localStorage.getItem("userdetails")
-                    const { data } = await axios.post("/users/auth", { token })
-                    const res = await axios.post("/users/remove-from-favorites", { id: data.id, productId: product.product_id })
+                    const res = await axios.post("/users/remove-from-favorites", { id: userId, productId: product.product_id })
                     if (res.data) {
                         fav.splice(index, 1)
                         setFavorites(fav)
+                        toast("Removed from your favorites collection!",{position:'top-center'})
                     }
                 } catch (error) {
-                    toast("Failed to remove from Favorites")
+                    toast("Failed to remove from Favorites",{position:'top-center'})
                 }
             }
-        } else {
+        } else { 
             //Add to favorites
             try {
-                const token = window.localStorage.getItem("userdetails")
-                const { data } = await axios.post("/users/auth", { token })
-                const res = await axios.post("/users/add-to-favorites", { id: data.id, productId: product.product_id })
+                const res = await axios.post("/users/add-to-favorites", { id: userId, productId: product.product_id })
                 setFavorites([...favorites, product.product_id])
+                toast("Added to your favorites collection!",{position:'top-center'})
             } catch (error) {
+                console.log(error)
                 toast("Failed to add to favorites")
             }
         }

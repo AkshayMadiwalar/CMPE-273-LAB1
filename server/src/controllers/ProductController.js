@@ -51,3 +51,16 @@ exports.getProducts = (req,res) => {
         return res.status(500).json({message:"Server error"})
     }
 }
+
+exports.getProductById = (req,res) => {
+    const productId = req.params.id
+    try {
+        ProductModel.findByProductId({productId},(err,data)=>{
+            if(err) return res.status(500).json({message:"Server error"})
+            if(data)
+                return res.json(data[0])
+        })
+    } catch (error) {
+        return res.status(500).json({message:"Server error"})
+    }
+}

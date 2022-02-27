@@ -10,6 +10,7 @@ import setAuthToken from './components/utils/setAuthToken';
 import { ToastContainer } from 'react-bootstrap';
 import MyShops from './components/profile/MyShops';
 import Dashboard from './components/dashboard/Dashboard';
+import ItemOverview from './components/cart/ItemOverview';
 
 if (localStorage.userdetails) {
   setAuthToken(localStorage.userdetails)
@@ -24,9 +25,11 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />}/>
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/profile/edit" element={<EditProfile/>}/>
-          <Route path="/shop" element={<NameYourShop/>}/>
+          <Route path="/shop" element={<NameYourShop/>} />
           <Route path="/shop/:name/home" element={<Shop />} />
           <Route path="/shop/myShops" element={<MyShops />} />
+
+          <Route path="/item/:id/overview" element={<ItemOverview />}/>
         </Routes>
 
     </Fragment>

@@ -135,6 +135,20 @@ exports.removeFromFavorites = (req,res) => {
     }
 }
 
+exports.myFavorites = (req,res) => {
+    const {id} = req.body
+    try {
+        FavoritesModel.findbyId({id},(err,data)=>{
+            if(err){
+                return res.status(500).json({message:'Server error'})
+            }
+            return res.json(data)
+        })
+    } catch (error) {
+        return res.status(500).json({message:"Server error"})
+    }
+}
+
 exports.searchFavorite = (req,res) => {
     const id = req.params.id
     const productId = req.params.productId
