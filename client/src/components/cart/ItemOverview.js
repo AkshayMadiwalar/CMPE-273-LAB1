@@ -2,10 +2,13 @@ import axios from 'axios'
 import React, { Fragment, useEffect, useState } from 'react'
 import { Carousel, Row, Col, Form, Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const ItemOverview = () => {
 
     const [product, setProduct] = useState({})
+    const [quantity,setQuantity] = useState()
+
     const params = useParams()
 
     useEffect(async () => {
@@ -13,6 +16,25 @@ const ItemOverview = () => {
         const { data } = await axios.get(`/users/product/${id}`)
         setProduct(data)
     }, [])
+
+    const onChangeQuantity = (e) => {
+        e.preventDefault()
+        setQuantity(e.target.value)
+    }
+
+    const addToCart = async (e) => {
+        e.preventDefault()
+        const productId = params.id
+        try {
+            const {data} = await axios.post('/users/auth')
+            const userId = data.id
+            const price = product.price
+            const res = await axios.post('/order/add-to-cart',{productId,userId,quantity,price})
+            toast('Item added to your Cart!')
+        } catch (error) {
+            toast('Failed to add to Cart')
+        }
+    }
 
     return (
         <Fragment>
@@ -41,12 +63,12 @@ const ItemOverview = () => {
                         <br/><br/>
                         <Form.Group className="mb-3">
                             <Form.Label>Number of Items</Form.Label>
-                            <Form.Control placeholder="Enter Quantity" />
+                            <Form.Control placeholder="Enter Quantity"  value={quantity} onChange={(e)=>onChangeQuantity(e)}/>
                         </Form.Group>
                         <Button variant='outline-warning' className='rounded-pill' style={{width:"100%"}}>Buy it now</Button>
                         <br/>
                         <br/>
-                        <Button variant='warning' className='rounded-pill' style={{width:"100%"}}>Add to cart</Button>
+                        <Button variant='warning' className='rounded-pill' onClick={(e)=>addToCart(e)} style={{width:"100%"}}>Add to cart</Button>
                     </Col>
                 </Row>
             )}

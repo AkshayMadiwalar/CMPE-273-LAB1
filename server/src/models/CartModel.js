@@ -35,3 +35,36 @@ exports.addToCart = ({productId,userId,sellerId,productName,img,category,descrip
         }
     })
 }
+
+exports.findByUserId = ({userId},result) => {
+    const sql = `select * from cart where user_id = '${userId}'`
+    db.query(sql,(err,res)=>{
+        if(err){
+            result(err,null)
+        }else{
+            result(null,res)
+        }
+    })
+}
+
+exports.deleteByUserId = ({userId},reuslt) => {
+    const sql = `delete from cart where user_id = '${userId}'`
+    db.query(sql,(err,res)=>{
+        if(err){
+            result(err,null)
+        }else{
+            result(null,err)
+        }
+    })
+}
+
+exports.deleteByUserIdAndProductId = ({userId,productId},result) => {
+    const sql = `delete from cart where user_id = '${userId}' and product_id = '${productId}'`
+    db.query(sql,(err,res)=>{
+        if(err){
+            result(err,null)
+        }else{
+            result(null,res)
+        }
+    })
+}

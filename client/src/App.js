@@ -11,6 +11,7 @@ import { ToastContainer } from 'react-bootstrap';
 import MyShops from './components/profile/MyShops';
 import Dashboard from './components/dashboard/Dashboard';
 import ItemOverview from './components/cart/ItemOverview';
+import Cart from './components/cart/Cart';
 
 if (localStorage.userdetails) {
   setAuthToken(localStorage.userdetails)
@@ -30,6 +31,7 @@ function App() {
           <Route path="/shop/myShops" element={<MyShops />} />
 
           <Route path="/item/:id/overview" element={<ItemOverview />}/>
+          <Route path="/cart" element={<Cart />} />
         </Routes>
 
     </Fragment>
