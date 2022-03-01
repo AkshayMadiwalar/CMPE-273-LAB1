@@ -64,3 +64,52 @@ exports.getProductById = (req,res) => {
         return res.status(500).json({message:"Server error"})
     }
 }
+
+exports.getProductsByCategory = (req,res) => {
+    const {category} = req.body
+    try {
+        ProductModel.getProductsByCategory({category},(err,data) => {
+            if(err) return res.status(500).json({message:"Server Error"})
+            if(data)
+                return res.json(data)
+        })
+    } catch (error) {
+        return res.status(500).json({message:"Server error"})
+    }
+}
+
+exports.getFIlteredProducts = (req,res) => {
+    const {category,price} = req.body
+    try {
+        ProductModel.getProductsByFilter({category,price},(err,data)=>{
+            if(err) return res.status(500).json({message:"Server Error"+err})
+            return res.json(data)
+        })
+    } catch (error) {
+        return res.status(500).json({message:"Server Error"+ error})
+    }
+}
+
+exports.filteredProductsSortByPrice = (req,res) => {
+    const {category,price,order} = req.body
+    try {
+        ProductModel.productsSortByPrice({category,price,order},(err,data)=>{
+            if(err) return res.status(500).json({message:"Server Error"+err})
+            return res.json(data)
+        })
+    } catch (error) {
+        return res.status(500).json({message:"Server Error"+error})
+    }
+}
+
+exports.filteredProductsSortByQuantity = (req,res) => {
+    const {category,price,quantity,order} = req.body
+    try {
+        ProductModel.productsSortByQuantity({category,price,quantity,order},(err,data)=>{
+            if(err) return res.status(500).json({message:"Server Error"})
+            return res.json(data)
+        })
+    } catch (error) {
+        return res.status(500).json({message:"Server Error"})
+    }
+}

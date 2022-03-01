@@ -60,3 +60,62 @@ exports.getProducts = ({sellerId},result) => {
         }
     })
 }
+
+exports.getProductsByCategory = ({category},result) => {
+    const sql =   `select * from products where category = '${category}'`
+    db.query(sql,(err,res)=>{
+        if(err){
+            result(err,null)
+        }else{
+            result(null,res)
+        }
+    })
+}
+
+exports.getProductsByFilter = ({category,price},result) => {
+    var sql = ``
+    if(category){
+        sql = `select * from products where category = '${category}' and cast(price as float) <= '${price}'`
+    }else{
+        sql = `select * from products where  cast(price as float) <= '${price}'`
+    }
+    db.query(sql,(err,res)=>{
+        if(err){
+            result(err,null)
+        }else{
+            result(null,res)
+        }
+    })
+}
+
+exports.productsSortByPrice = ({category,price,order}, result) => {
+    var sql = ``
+    if(category){
+        sql = `select * from products where category = '${category}' and cast(price as float) <= '${price}' order by cast(price as float) ${order}`
+    }else{
+        sql =  `select * from products where cast(price as float) <= '${price}' order by cast(price as float) ${order}`
+    }
+    db.query(sql,(err,res)=>{
+        if(err){
+            result(err,null)
+        }else{
+            result(null,res)
+        }
+    })
+}
+
+exports.productsSortByQuantity = ({category,price,quantity,order}, result) => {
+    var sql = ``
+    if(category){
+        sql = `select * from products where category = '${category}' and cast(quantity as float) <= '${quantity}' and cast(price as float) <= '${price}' order by cast(quantity as float) ${order}`
+    }else{
+        sql =  `select * from products where cast(quantity as float) <= '${quantity}' and cast(price as float) <= '${price}' order by cast(quantity as float) ${order}`
+    }
+    db.query(sql,(err,res)=>{
+        if(err){
+            result(err,null)
+        }else{
+            result(null,res)
+        }
+    })
+}

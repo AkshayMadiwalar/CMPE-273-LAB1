@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 const AddItem = ({ addItem, setAddItem, sellerId, shop }) => {
     const [formData, setFormData] = useState({
         name: "",
-        category: "",
+        category: "Clothing",
         price: "",
         description: "",
         quantity: "",

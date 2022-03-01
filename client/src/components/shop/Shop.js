@@ -31,7 +31,6 @@ const Shop = () => {
         var grid = []
         for (var i = 0; i < data.length; i = i + 3) {
             var ar = []
-            console.log(data[i])
             if (data[i]) {
                 ar.push(data[i])
             }
@@ -39,7 +38,7 @@ const Shop = () => {
                 ar.push(data[i + 1])
             }
             if (data[i + 2]) {
-                ar.push(data[i])
+                ar.push(data[i+2])
             }
             grid.push(ar)
         }

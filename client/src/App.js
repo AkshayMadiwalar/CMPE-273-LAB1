@@ -12,6 +12,8 @@ import MyShops from './components/profile/MyShops';
 import Dashboard from './components/dashboard/Dashboard';
 import ItemOverview from './components/cart/ItemOverview';
 import Cart from './components/cart/Cart';
+import PrivateRoute from './components/private-routes/PrivateRoute';
+import ProductList from './components/products/ProductList';
 
 if (localStorage.userdetails) {
   setAuthToken(localStorage.userdetails)
@@ -20,19 +22,42 @@ if (localStorage.userdetails) {
 function App() {
   return (
     <Fragment>
-      <ToastContainer position='top-center'/>
+      <ToastContainer position='top-center' />
       <NavBarLayout />
       <Routes>
-          <Route path="/dashboard" element={<Dashboard />}/>
-          <Route path="/profile" element={<UserProfile />} />
-          <Route path="/profile/edit" element={<EditProfile/>}/>
-          <Route path="/shop" element={<NameYourShop/>} />
-          <Route path="/shop/:name/home" element={<Shop />} />
-          <Route path="/shop/myShops" element={<MyShops />} />
+        <Route path="/dashboard" element={<Dashboard />} />
 
-          <Route path="/item/:id/overview" element={<ItemOverview />}/>
+        <Route path="/products" element={<ProductList />} />
+
+        <Route path="/profile" element={<PrivateRoute />}>
+          <Route path="/profile" element={<UserProfile />} />
+        </Route>
+
+        <Route path="/profile/edit" element={<PrivateRoute />}>
+          <Route path="/profile/edit" element={<EditProfile />} />
+        </Route>
+
+        <Route path="/shop" element={<PrivateRoute />}>
+          <Route path="/shop" element={<NameYourShop />} />
+        </Route>
+
+        <Route path="/shop/:name/home" element={<PrivateRoute />}>
+          <Route path="/shop/:name/home" element={<Shop />} />
+        </Route>
+
+        <Route path="/shop/myShops" element={<PrivateRoute />}>
+          <Route path="/shop/myShops" element={<MyShops />} />
+        </Route>
+
+        <Route path="/item/:id/overview" element={<PrivateRoute />}>
+          <Route path="/item/:id/overview" element={<ItemOverview />} />
+        </Route>
+
+        <Route path="/cart" element={<PrivateRoute />}>
           <Route path="/cart" element={<Cart />} />
-        </Routes>
+        </Route>
+
+      </Routes>
 
     </Fragment>
   );

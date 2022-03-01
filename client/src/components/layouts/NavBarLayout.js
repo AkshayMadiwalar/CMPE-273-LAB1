@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Navbar, Nav, NavDropdown, Container, InputGroup, FormControl, Form, Button } from 'react-bootstrap'
+import { Navbar, Nav, NavDropdown, Container, InputGroup, FormControl, Form, Button, Col } from 'react-bootstrap'
 import Signup from '../auth/Signup'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
@@ -25,7 +25,7 @@ const NavBarLayout = props => {
 
   const logout = (e) => {
     e.preventDefault()
-    window.localStorage.setItem("userdetails","")
+    window.localStorage.setItem("userdetails", "")
     setLoggedIn(false)
     window.location.reload(false)
     toast.success("Logged Out")
@@ -35,19 +35,29 @@ const NavBarLayout = props => {
     <Fragment>
       <Navbar bg="dark" variant="dark" expand="lg">
         <Container fluid>
-          <Navbar.Brand href="#">Navbar scroll</Navbar.Brand>
+
+          <Col sm={1}></Col>
+          <Col sm={2}>
+            <Navbar.Brand href="#">Etsy</Navbar.Brand>
+          </Col>
+
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
 
-            <Form className="d-flex" style={{ width: "50%" }}>
-              <FormControl
-                type="search"
-                placeholder="Search"
-                className="me-1"
-                aria-label="Search"
-              />
-              <Button variant="outline-success"> <i class="fa fa-search" aria-hidden="true"></i></Button>
-            </Form>
+            <Col sm={6}>
+              <Form className="d-flex" style={{ width: "100%" }}>
+                <FormControl
+                  type="search"
+                  placeholder="Search"
+                  className="me-1"
+                  aria-label="Search"
+                />
+                <Button variant="outline-success"> <i class="fa fa-search" aria-hidden="true"></i></Button>
+              </Form>
+            </Col>
+
+            <Col sm={2}></Col>
+
             <Nav
               className="me-auto my-2 my-lg-0"
               style={{ maxHeight: '100px' }}
@@ -57,12 +67,11 @@ const NavBarLayout = props => {
               {loggedIn && (
                 <>
                   <Nav.Link href="#action1"><i class="fa fa-heart" aria-hidden="true"></i></Nav.Link>
-
                   <NavDropdown title={(<i class="fa fa-shopping-bag" aria-hidden="true"></i>)} id="basic-nav-dropdown">
                     <NavDropdown.Item href="#action/3.1"><Link to="/shop"><span>Sell on Etsy</span></Link></NavDropdown.Item>
                   </NavDropdown>
 
-                  
+
                   <NavDropdown title={(<i class="fa fa-user-circle" aria-hidden="true"></i>)} id="basic-nav-dropdown">
                     <NavDropdown.Item ><Link to="/profile"><span>My Profile</span></Link></NavDropdown.Item>
                     <NavDropdown.Item >My Purchases</NavDropdown.Item>
@@ -80,7 +89,7 @@ const NavBarLayout = props => {
             )}
 
             {loggedIn && (
-              <Button variant="warning" onClick={(e)=>logout(e)}>Logout</Button>
+              <Button variant="warning" onClick={(e) => logout(e)}>Logout</Button>
             )}
 
           </Navbar.Collapse>
