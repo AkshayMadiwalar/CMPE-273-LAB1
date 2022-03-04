@@ -66,7 +66,7 @@ const NavBarLayout = props => {
 
               {loggedIn && (
                 <>
-                  <Nav.Link href="#action1"><i class="fa fa-heart" aria-hidden="true"></i></Nav.Link>
+                  <Nav.Link><Link to="/products/favorites"><i class="fa fa-heart" aria-hidden="true"></i></Link></Nav.Link>
                   <NavDropdown title={(<i class="fa fa-shopping-bag" aria-hidden="true"></i>)} id="basic-nav-dropdown">
                     <NavDropdown.Item href="#action/3.1"><Link to="/shop"><span>Sell on Etsy</span></Link></NavDropdown.Item>
                   </NavDropdown>

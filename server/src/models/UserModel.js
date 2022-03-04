@@ -42,14 +42,18 @@ exports.updateUser = ({
         firstName,
         lastName,
         email,
+        contactNumber,
         gender,
         dob,
         city,
+        address,
+        zipcode,
         about,
-        country
+        country,
+        profileImg
     },result) => {
-        const sql = `update users set first_name = '${firstName}', last_name= '${lastName}', gender='${gender}',
-                    dob='${dob}', city='${city}', country='${country}', about='${about}' where id='${id}'`
+        const sql = `update users set first_name = '${firstName}', last_name= '${lastName}', email='${email}', contact_number='${contactNumber}', gender='${gender}',
+                    dob='${dob}', city='${city}', address='${address}', zipcode='${zipcode}', country='${country}', about='${about}', profile_img = '${profileImg}' where id='${id}'`
         db.query(sql,(err,res)=>{
             if(err){
                 result(err,null)

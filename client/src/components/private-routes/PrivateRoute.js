@@ -10,6 +10,7 @@ const PrivateRoute = () => {
     useEffect(async () => {
         try {
             const res = await axios.post("/users/auth")
+            console.log(res,"-------------")
             if (res.status != 200) {
                 setSession(false)
                 setLoading(false)
@@ -25,12 +26,19 @@ const PrivateRoute = () => {
 
     }, [])
 
-    if(loading){
-        if (session) {
-            return <Outlet />
-        }
-        return <Navigate to="/dashboard" />
-    }
+    // if(!loading){
+        
+    //     if (session) {
+    //         console.log("--2--")
+    //         return <Outlet />
+    //     }
+    //     console.log("--3--")
+    //     return <Navigate to="/dashboard" />
+    // }
+
+    const token = window.localStorage.getItem('userdetails')
+
+    return  token ? <Outlet /> : <Navigate to="/dashboard" />;
     
 }
 

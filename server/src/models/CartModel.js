@@ -47,13 +47,13 @@ exports.findByUserId = ({userId},result) => {
     })
 }
 
-exports.deleteByUserId = ({userId},reuslt) => {
+exports.deleteByUserId = ({userId},result) => {
     const sql = `delete from cart where user_id = '${userId}'`
     db.query(sql,(err,res)=>{
         if(err){
             result(err,null)
         }else{
-            result(null,err)
+            result(null,res)
         }
     })
 }

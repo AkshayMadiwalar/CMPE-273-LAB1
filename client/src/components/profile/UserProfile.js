@@ -1,10 +1,15 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { Card, Row, Col, Image, Form, FormControl, Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 import defaultProfileImg from './../../images/defaultProfileImg.png'
 
 const UserProfile = props => {
 
     const arr = [1, 2, 3, 4, 5, 6, 7]
+
+    useEffect(()=>{
+        
+    },[])
 
 
     const arrGrid = []
@@ -43,7 +48,7 @@ const UserProfile = props => {
 
                         </Col>
                         <Col>
-                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                            <Link to={`/profile/edit`}><i class="fa fa-pencil" aria-hidden="true"></i></Link>
                         </Col>
                     </Row>
                 </Card.Body>

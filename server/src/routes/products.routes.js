@@ -12,5 +12,6 @@ router.post('/by-category',auth,ProductController.getProductsByCategory)
 router.post('/filter',auth,ProductController.getFIlteredProducts)
 router.post('/sort-by-price',auth,ProductController.filteredProductsSortByPrice)
 router.post('/sort-by-quantity',auth,ProductController.filteredProductsSortByQuantity)
+router.post('/sort-by-sales',auth,ProductController.filteredProductsSortBySales)
 
 module.exports = router

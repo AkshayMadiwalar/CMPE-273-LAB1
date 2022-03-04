@@ -113,3 +113,15 @@ exports.filteredProductsSortByQuantity = (req,res) => {
         return res.status(500).json({message:"Server Error"})
     }
 }
+
+exports.filteredProductsSortBySales = (req,res) => {
+    const {category,price,order} = req.body
+    try {
+        ProductModel.productsSortBySales({category,price,order},(err,data)=>{
+            if(err) return res.status(500).json({message:"Server Error"})
+            return res.json(data)
+        })
+    } catch (error) {
+        return res.status(500).json({message:"Server Error"})
+    }
+}

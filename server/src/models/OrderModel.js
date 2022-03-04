@@ -91,7 +91,7 @@ exports.placeOrder = ({productId,userId,price,quantity},result) => {
                                 console.log(err)
                                 if(err){
                                     result(err,null)
-                                }else{
+                                }else{    
                                     result(null,orderModel)
                                 }
                             })

@@ -104,12 +104,12 @@ exports.productsSortByPrice = ({category,price,order}, result) => {
     })
 }
 
-exports.productsSortByQuantity = ({category,price,quantity,order}, result) => {
+exports.productsSortByQuantity = ({category,price,order}, result) => {
     var sql = ``
     if(category){
-        sql = `select * from products where category = '${category}' and cast(quantity as float) <= '${quantity}' and cast(price as float) <= '${price}' order by cast(quantity as float) ${order}`
+        sql = `select * from products where category = '${category}'  and cast(price as float) <= '${price}' order by cast(quantity as float) ${order}`
     }else{
-        sql =  `select * from products where cast(quantity as float) <= '${quantity}' and cast(price as float) <= '${price}' order by cast(quantity as float) ${order}`
+        sql =  `select * from products where  cast(price as float) <= '${price}' order by cast(quantity as float) ${order}`
     }
     db.query(sql,(err,res)=>{
         if(err){
@@ -119,3 +119,41 @@ exports.productsSortByQuantity = ({category,price,quantity,order}, result) => {
         }
     })
 }
+
+exports.productsSortBySales = ({category,price,order},result) => {
+    var sql = ``
+    if(category){
+        sql = `select * from products where category = '${category}'  and cast(price as float) <= '${price}' order by cast(sales as float) ${order}`
+    }else{
+        sql =  `select * from products where  cast(price as float) <= '${price}' order by cast(sales as float) ${order}`
+    }
+    db.query(sql,(err,res)=>{
+        if(err){
+            result(err,null)
+        }else{
+            result(null,res)
+        }
+    })
+}
+
+exports.incrementSales = ({productId,quantity},result) => {
+    const salessql = `select sales from products where product_id = '${productId}'`
+
+    db.query(salessql,(err,res)=>{
+        if(err){    
+            return result(err,null)
+        }
+        const {sales} = res[0]
+        console.log("-----------add",sales+quantity)
+        const sql = `update products set sales = '${sales + parseInt(quantity)}' where product_id = '${productId}'`
+        db.query(sql,(err,res)=>{
+            if(err){
+                result(err,null)
+            }
+            else{
+                result(null,res)
+            }
+        })
+    })
+}
+

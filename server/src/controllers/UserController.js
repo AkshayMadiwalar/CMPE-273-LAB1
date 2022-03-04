@@ -44,18 +44,23 @@ exports.createUser = async (req, res) => {
 
 exports.updateUser = (req, res) => {
     const {
+        id,
         firstName,
         lastName,
         email,
+        contactNumber,
         gender,
         dob,
         city,
+        address,
+        zipcode,
         country,
-        about
+        about,
+        profileImg
     } = req.body
 
     try {
-        UserModel.findByEmail({ email }, (err, data) => {
+        UserModel.findById({id}, (err, data) => {
             if (err) return res.status(500).json({ message: 'Server error' })
             if (data.length > 0) {
                 const user = data[0]
@@ -64,10 +69,13 @@ exports.updateUser = (req, res) => {
                     id, firstName,
                     lastName,
                     email,
+                    contactNumber,
                     gender,
                     dob,
                     city,
-                    country, about
+                    address,
+                    zipcode,
+                    country, about, profileImg
                 }, (err, data) => {
                     if (err) throw err
                     if (data) {

@@ -29,6 +29,7 @@ function App() {
 
         <Route path="/products" element={<ProductList />} />
 
+
         <Route path="/profile" element={<PrivateRoute />}>
           <Route path="/profile" element={<UserProfile />} />
         </Route>

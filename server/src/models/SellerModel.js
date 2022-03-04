@@ -68,3 +68,23 @@ exports.findById = ({sellerId},result) => {
         }
     })
 }
+
+exports.incrementSales = ({sellerId,quantity},result) => {
+    const salessql = `select sales from seller where seller_id = '${sellerId}'`
+    db.query(salessql,(err,res)=>{
+        if(err){    
+            return result(err,null)
+        }
+        console.log("seller id-----",sellerId)
+        const {sales} = res[0]
+        const sql = `update seller set sales = '${sales + parseInt(quantity)}' where seller_id = '${sellerId}'`
+        db.query(sql,(err,res)=>{
+            if(err){
+                result(err,null)
+            }
+            else{
+                result(null,res)
+            }
+        })
+    })
+}
