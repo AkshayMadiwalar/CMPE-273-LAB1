@@ -1,34 +1,63 @@
-import React, { Fragment, useEffect } from 'react'
-import { Card, Row, Col, Image, Form, FormControl, Button } from 'react-bootstrap'
+import React, { Fragment, useEffect, useState } from 'react'
+import { Card, Row, Col, Image, Form, FormControl, Button, OverlayTrigger,Tooltip } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import defaultProfileImg from './../../images/defaultProfileImg.png'
+import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const UserProfile = props => {
 
     const arr = [1, 2, 3, 4, 5, 6, 7]
 
-    useEffect(()=>{
-        
-    },[])
+    const [profile, setProfile] = useState({})
+    const [favorites, setFavorites] = useState()
+    const [searchFav,setSearchFav] = useState()
 
+    useEffect(async () => {
+        const { data } = await axios.post("/users/auth")
+        console.log(data)
+        setProfile(data)
+        const res = await axios.post('/users/myFavorites', { id: data.id })
+        setProductGrid(res.data)
+    }, [])
 
-    const arrGrid = []
-    for (var i = 0; i < arr.length; i = i + 4) {
-        var ar = []
-        if (arr[i]) {
-            ar.push(arr[i])
+    const setProductGrid = (data) => {
+        const favItemsGrid = []
+        for (var i = 0; i < data.length; i = i + 4) {
+            var ar = []
+            if (data[i]) {
+                ar.push(data[i])
+            }
+            if (data[i + 1]) {
+                ar.push(data[i + 1])
+            }
+            if (data[i + 2]) {
+                ar.push(data[i + 2])
+            }
+            if (data[i + 3]) {
+                ar.push(data[i + 3])
+            }
+            favItemsGrid.push(ar)
         }
-        if (arr[i + 1]) {
-            ar.push(arr[i + 1])
-        }
-        if (arr[i + 2]) {
-            ar.push(arr[i + 2])
-        }
-        if (arr[i + 3]) {
-            ar.push(arr[i + 3])
-        }
-        arrGrid.push(ar)
+        setFavorites(favItemsGrid)
     }
+
+    const removeFromFavorites = async (item) => {
+        const res = await axios.post("/users/remove-from-favorites", { id: profile.id, productId: item.product_id })
+        if (res.data) {
+            toast.success("Removed from your favorites collection!")
+            const {data} = await axios.post('/users/myFavorites', { id: profile.id })
+            setProductGrid(data)
+        }
+    }
+
+    const search = async () => {
+        console.log(searchFav)
+        // const {data} = await axios.post('/users/myFavorites', { id: profile.id })
+        // console.log(data.filter(item=> item.product_name == name))
+    }
+
+
 
     return (
         <Fragment>
@@ -36,14 +65,20 @@ const UserProfile = props => {
                 <Card.Body>
                     <Row>
                         <Col sm={3}>
-                            <Image rounded width={175} height={150} src={defaultProfileImg} />
+                            <Image rounded width={175} height={150} src={profile.profile_img ? profile.profile_img : defaultProfileImg} />
                         </Col>
                         <Col>
                             <Row>
-                                <h4>Akshay Madiwalar</h4>
+                                <h4>{profile.first_name}{' '}{profile.last_name}</h4>
                             </Row>
                             <Row>
-                                0 Followers | 0 Following
+                                <span>{profile.email}</span>
+                                {profile.contact_number && (
+                                    <span>{profile.contact_number}</span>
+                                )}
+                                {profile.city && profile.country && (
+                                    <span>{profile.city}, {profile.country}</span>
+                                )}
                             </Row>
 
                         </Col>
@@ -58,7 +93,7 @@ const UserProfile = props => {
                 <Card.Header>
                     <Row>
                         <Col>
-                            Favorite Items
+                            <h5>Favorite Items</h5>
                         </Col>
                         <Col>
                             <Form className="d-flex" >
@@ -67,26 +102,56 @@ const UserProfile = props => {
                                     placeholder="Search your favorites"
                                     className="me-1"
                                     aria-label="Search"
+                                    name="searchFav"
+                                    value={searchFav}
+                                    onChange={(e)=>setSearchFav(searchFav)}
                                 />
-                                <Button variant="outline-success"> <i class="fa fa-search" aria-hidden="true"></i></Button>
+                                <Button variant="outline-warning" onClick={()=>search()}> <i class="fa fa-search" aria-hidden="true"></i></Button>
                             </Form>
                         </Col>
                     </Row>
                 </Card.Header>
 
 
-                {arrGrid && arrGrid.map(arr => (
+                {favorites && favorites.map(arr => (
                     <Row>
                         {arr && arr.map(item => (
-                            <Col>
+                            <Col sm={4}>
                                 <Card.Body>
                                     <Card.Text>
-                                        <Card style={{ width: '12rem' }}>
-                                            <Card.Img variant="top" src={defaultProfileImg} />
+                                        <Card style={{ width: '15rem' }}>
+                                            <Card.Img variant="top" src={item.img ? item.img : defaultProfileImg} />
                                             <Card.Body>
-                                                <Card.Title>Item Name</Card.Title>
+                                                <Card.Title>
+                                                    <Row>
+                                                        <Col>
+                                                            {item.product_name}
+                                                        </Col>
+                                                        <Col>
+                                                            <OverlayTrigger
+                                                                placement="bottom"
+                                                                overlay={<Tooltip id="button-tooltip-2">Remove From favorites</Tooltip>}
+                                                            >
+                                                                <Button
+                                                                    variant="light"
+                                                                    className="d-inline-flex align-items-center"
+                                                                    onClick={() => removeFromFavorites(item)}
+                                                                >
+                                                                    <i style={{ color: 'red' }} className="fa fa-heart" aria-hidden="true"></i>
+                                                                </Button>
+                                                            </OverlayTrigger>
+                                                        </Col>
+                                                    </Row>
+                                                </Card.Title>
                                                 <Card.Text>
-                                                    Price, In Stock
+                                                    <Row>
+                                                        <Col>
+                                                            <span style={{ fontWeight: 'bold' }}>${item.price}</span>
+                                                        </Col>
+                                                        <Col>
+                                                            {item.quantity > 0 ? <span>In Stock</span> : <span style={{ color: 'red' }}>Out of Stock</span>}
+                                                        </Col>
+                                                    </Row>
                                                 </Card.Text>
                                                 {/* <Button variant="primary">Go somewhere</Button> */}
                                             </Card.Body>
