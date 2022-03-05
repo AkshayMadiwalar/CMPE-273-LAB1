@@ -14,6 +14,8 @@ import ItemOverview from './components/cart/ItemOverview';
 import Cart from './components/cart/Cart';
 import PrivateRoute from './components/private-routes/PrivateRoute';
 import ProductList from './components/products/ProductList';
+import { Card } from 'react-bootstrap';
+import Footer from './components/layouts/Footer';
 
 if (localStorage.userdetails) {
   setAuthToken(localStorage.userdetails)
@@ -22,43 +24,54 @@ if (localStorage.userdetails) {
 function App() {
   return (
     <Fragment>
-      <ToastContainer position='top-center' />
-      <NavBarLayout />
-      <Routes>
-        <Route path="/dashboard" element={<Dashboard />} />
-
-        <Route path="/products" element={<ProductList />} />
 
 
-        <Route path="/profile" element={<PrivateRoute />}>
-          <Route path="/profile" element={<UserProfile />} />
-        </Route>
+      <Card style={{margin:0,padding:0}}> 
+        <Card.Body style={{margin:0,padding:0}}>
+          <ToastContainer position='top-center' />
+          <NavBarLayout />
+          <Routes>
 
-        <Route path="/profile/edit" element={<PrivateRoute />}>
-          <Route path="/profile/edit" element={<EditProfile />} />
-        </Route>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
 
-        <Route path="/shop" element={<PrivateRoute />}>
-          <Route path="/shop" element={<NameYourShop />} />
-        </Route>
+            <Route path="/products" element={<ProductList />} />
 
-        <Route path="/shop/:name/home" element={<PrivateRoute />}>
-          <Route path="/shop/:name/home" element={<Shop />} />
-        </Route>
 
-        <Route path="/shop/myShops" element={<PrivateRoute />}>
-          <Route path="/shop/myShops" element={<MyShops />} />
-        </Route>
+            <Route path="/profile" element={<PrivateRoute />}>
+              <Route path="/profile" element={<UserProfile />} />
+            </Route>
 
-        <Route path="/item/:id/overview" element={<PrivateRoute />}>
-          <Route path="/item/:id/overview" element={<ItemOverview />} />
-        </Route>
+            <Route path="/profile/edit" element={<PrivateRoute />}>
+              <Route path="/profile/edit" element={<EditProfile />} />
+            </Route>
 
-        <Route path="/cart" element={<PrivateRoute />}>
-          <Route path="/cart" element={<Cart />} />
-        </Route>
+            <Route path="/shop" element={<PrivateRoute />}>
+              <Route path="/shop" element={<NameYourShop />} />
+            </Route>
 
-      </Routes>
+            <Route path="/shop/:name/home" element={<PrivateRoute />}>
+              <Route path="/shop/:name/home" element={<Shop />} />
+            </Route>
+
+            <Route path="/shop/myShops" element={<PrivateRoute />}>
+              <Route path="/shop/myShops" element={<MyShops />} />
+            </Route>
+
+            <Route path="/item/:id/overview" element={<PrivateRoute />}>
+              <Route path="/item/:id/overview" element={<ItemOverview />} />
+            </Route>
+
+            <Route path="/cart" element={<PrivateRoute />}>
+              <Route path="/cart" element={<Cart />} />
+            </Route>
+
+          </Routes>
+        </Card.Body>
+        <Card.Footer style={{backgroundColor:"#1a125c",color:'white'}}>
+            <Footer />
+        </Card.Footer>
+      </Card>
 
     </Fragment>
   );

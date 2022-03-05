@@ -103,7 +103,7 @@ const Shop = () => {
 
                                     <br />
                                     <hr />
-                                    <span style={{ fontWeight: 'lighter' }}>0 Sales (Total)</span>
+                                    <span style={{ fontWeight: 'lighter' }}>{shop.sales} Sales (Total)</span>
                                 </Col>
                                 <Col sm={9}>
                                     {arrGrid && arrGrid.length > 0 && arrGrid.map(arr => (
@@ -116,9 +116,10 @@ const Shop = () => {
                                                                     <Card style={{ width: '13rem', height: '13rem' }}>
                                                                         <Card.Img variant="top" width={70} height={100} src={item.img} />
                                                                         <Card.Body>
-                                                                            <Card.Title><span style={{ fontWeight: 'bold' }}>{item.product_name}</span> | <span style={{ fontWeight: 'lighter' }}>{item.category}</span></Card.Title>
+                                                                            <Card.Title><span style={{ fontWeight: 'bold' }}>{item.product_name}</span> | <span style={{ fontWeight: 'lighter', fontSize:15 }}>{item.sales} Sales</span></Card.Title>
                                                                             <Card.Text>
                                                                                 $ {item.price} | {item.quantity > 0 ? (<span style={{ fontWeight: 'lighter' }}>{item.quantity} available</span>) : (<span style={{ fontWeight: 'lighter', color: 'red' }}>Out of Stock</span>)}
+                                                                     
                                                                             </Card.Text>
                                                                             {/* <Button variant="primary">Go somewhere</Button> */}
                                                                         </Card.Body>

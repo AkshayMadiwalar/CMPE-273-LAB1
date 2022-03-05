@@ -8,8 +8,8 @@ import { toast } from 'react-toastify'
 
 const NavBarLayout = props => {
   const [showModal, setShowModal] = useState(false)
-
   const [loggedIn, setLoggedIn] = useState(false)
+  const [cartItems,setCartItems] = useState()
 
   toast.configure()
 
@@ -18,6 +18,10 @@ const NavBarLayout = props => {
     if (user.data) {
       //LoggedIN
       setLoggedIn(true)
+      const {data} = await axios.post("/order/cart-items",{userId:user.data.id})
+      if(data){
+        setCartItems(data.length)
+      }
     } else {
       setLoggedIn(false)
     }
@@ -38,7 +42,7 @@ const NavBarLayout = props => {
 
           <Col sm={1}></Col>
           <Col sm={2}>
-            <Navbar.Brand href="#">Etsy</Navbar.Brand>
+            <Navbar.Brand href="#"><Link to="/dashboard" style={{ textDecoration: 'none', color:'white' }}>Etsy</Link></Navbar.Brand>
           </Col>
 
           <Navbar.Toggle aria-controls="navbarScroll" />
@@ -66,7 +70,7 @@ const NavBarLayout = props => {
 
               {loggedIn && (
                 <>
-                  <Nav.Link><Link to="/products/favorites"><i class="fa fa-heart" aria-hidden="true"></i></Link></Nav.Link>
+                  <Nav.Link><Link to="/profile"><i class="fa fa-heart" aria-hidden="true"></i></Link></Nav.Link>
                   <NavDropdown title={(<i class="fa fa-shopping-bag" aria-hidden="true"></i>)} id="basic-nav-dropdown">
                     <NavDropdown.Item href="#action/3.1"><Link to="/shop"><span>Sell on Etsy</span></Link></NavDropdown.Item>
                   </NavDropdown>
@@ -79,10 +83,11 @@ const NavBarLayout = props => {
                     <NavDropdown.Divider />
                     <NavDropdown.Item href="#action/3.4">Sign out</NavDropdown.Item>
                   </NavDropdown>
+
+                  <Nav.Link href="#action2"><i class="fa fa-shopping-cart" aria-hidden="true"></i></Nav.Link>
                 </>
               )}
 
-              <Nav.Link href="#action2"><i class="fa fa-shopping-cart" aria-hidden="true"></i></Nav.Link>
             </Nav>
             {!loggedIn && (
               <Button variant="warning" onClick={() => setShowModal(true)}>Login</Button>

@@ -13,14 +13,14 @@ const Dashboard = () => {
 
     const [favorites, setFavorites] = useState([])
 
-    const [userId,setUserId] = useState()
+    const [user, setUser] = useState()
 
     useEffect(async () => {
-        
+
         //Set user id from access token stored in localstorage
         const token = window.localStorage.getItem("userdetails")
         const res = await axios.post("/users/auth", { token })
-        setUserId(res.data.id)
+        setUser(res.data.id)
 
         //Get all products
         const { data } = await axios.get('/dashboard/products')
@@ -45,11 +45,11 @@ const Dashboard = () => {
         setProducts(grid)
 
 
-        const fav = await axios.post('/users/myFavorites',{id:res.data.id})
+        const fav = await axios.post('/users/myFavorites', { id: res.data.id })
         console.log(fav.data)
 
         var favItems = []
-        fav.data.map(item=>{
+        fav.data.map(item => {
             favItems.push(item.product_id)
         })
         setFavorites(favItems)
@@ -62,22 +62,22 @@ const Dashboard = () => {
             const index = fav.indexOf(product.product_id)
             if (index != -1) {
                 try {
-                    const res = await axios.post("/users/remove-from-favorites", { id: userId, productId: product.product_id })
+                    const res = await axios.post("/users/remove-from-favorites", { id: user.id, productId: product.product_id })
                     if (res.data) {
                         fav.splice(index, 1)
                         setFavorites(fav)
-                        toast("Removed from your favorites collection!",{position:'top-center'})
+                        toast("Removed from your favorites collection!", { position: 'top-center' })
                     }
                 } catch (error) {
-                    toast("Failed to remove from Favorites",{position:'top-center'})
+                    toast("Failed to remove from Favorites", { position: 'top-center' })
                 }
             }
-        } else { 
+        } else {
             //Add to favorites
             try {
-                const res = await axios.post("/users/add-to-favorites", { id: userId, productId: product.product_id })
+                const res = await axios.post("/users/add-to-favorites", { id: user.id, productId: product.product_id })
                 setFavorites([...favorites, product.product_id])
-                toast("Added to your favorites collection!",{position:'top-center'})
+                toast("Added to your favorites collection!", { position: 'top-center' })
             } catch (error) {
                 console.log(error)
                 toast("Failed to add to favorites")
@@ -90,7 +90,10 @@ const Dashboard = () => {
             <Card >
                 <Card.Body style={{ backgroundColor: "#FDEBD2", height: "100%" }}>
                     <Row>
-                        <h2 style={{ textAlign: 'center' }}>Welcome back Akshay!</h2>
+                        {user && (
+                            <h2 style={{ textAlign: 'center' }}>Welcome back Akshay!</h2>
+                        )}
+
                         <h3 style={{ textAlign: 'center' }}>Explore one-of-a-kind finds from independent makers</h3>
                     </Row>
                     <br />

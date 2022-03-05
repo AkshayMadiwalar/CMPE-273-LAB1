@@ -4,10 +4,13 @@ import { Modal, Button, Form, Col, Row } from 'react-bootstrap'
 import axios from 'axios'
 import { ToastContainer, toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
+import { Navigate } from 'react-router-dom'
 
 const Signup = ({ showModal, setShowModal }) => {
     const [signin, setSignin] = useState(true)
     const [register, setRegister] = useState(false)
+    const [loggedIn,setLoggedIn] = useState(false)
+
 
     const handleRegister = (e) => {
         e.preventDefault()
@@ -52,6 +55,7 @@ const Signup = ({ showModal, setShowModal }) => {
                 toast.success("Registered",{
                     position: "top-center",
                 })
+                setLoggedIn(true)
             }
         } catch (error) {
             setShowModal(false)
@@ -69,7 +73,7 @@ const Signup = ({ showModal, setShowModal }) => {
                 toast.success("Loggedin",{
                     position: "top-center",
                 })
-                window.location.reload(false)
+                setLoggedIn(true)
             }
         } catch (error) {
             setShowModal(false)
@@ -78,6 +82,10 @@ const Signup = ({ showModal, setShowModal }) => {
     }
 
     toast.configure()
+
+    if(loggedIn){
+        return <Navigate to="/dashboard"/>
+    }
 
     return (
         <Fragment>
