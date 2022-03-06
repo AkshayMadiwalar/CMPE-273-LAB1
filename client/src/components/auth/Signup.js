@@ -66,7 +66,7 @@ const Signup = ({ showModal, setShowModal }) => {
     const onSubmitLogin = async (e) => {
         e.preventDefault()
         try {
-            const res = await axios.post("http://etsy.server.com/users/login",{email:loginForm.loginEmail,password:loginForm.loginPassword})
+            const res = await axios.post("http://localhost:8585/users/login",{email:loginForm.loginEmail,password:loginForm.loginPassword})
             if(res.status === 200 ){
                 window.localStorage.setItem("userdetails",res.data.token)
                 setShowModal(false)
