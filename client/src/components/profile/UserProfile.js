@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import defaultProfileImg from './../../images/defaultProfileImg.png'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import constants from './../../utils/constants.json'
 
 const UserProfile = props => {
 
@@ -14,10 +15,10 @@ const UserProfile = props => {
     const [searchFav,setSearchFav] = useState()
 
     useEffect(async () => {
-        const { data } = await axios.post("/users/auth")
+        const { data } = await axios.post(constants.uri+"/users/auth")
         console.log(data)
         setProfile(data)
-        const res = await axios.post('/users/myFavorites', { id: data.id })
+        const res = await axios.post(constants.uri+'/users/myFavorites', { id: data.id })
         setProductGrid(res.data)
     }, [])
 
@@ -43,10 +44,10 @@ const UserProfile = props => {
     }
 
     const removeFromFavorites = async (item) => {
-        const res = await axios.post("/users/remove-from-favorites", { id: profile.id, productId: item.product_id })
+        const res = await axios.post(constants.uri+"/users/remove-from-favorites", { id: profile.id, productId: item.product_id })
         if (res.data) {
             toast.success("Removed from your favorites collection!")
-            const {data} = await axios.post('/users/myFavorites', { id: profile.id })
+            const {data} = await axios.post(constants.uri+'/users/myFavorites', { id: profile.id })
             setProductGrid(data)
         }
     }

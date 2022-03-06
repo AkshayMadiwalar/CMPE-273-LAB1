@@ -6,6 +6,7 @@ import { toast } from 'react-toastify'
 import defaultProfileImg from './../../images/defaultProfileImg.png'
 import countries from './../utils/countries.json'
 import {s3,bucketName} from './../../aws-config/aws.js'
+import constants from './../../utils/constants.json'
 
 const EditProfile = () => {
 
@@ -34,7 +35,7 @@ const EditProfile = () => {
 
 
     useEffect(async () => {
-        const { data } = await axios.post("/users/auth")
+        const { data } = await axios.post(constants.uri+"/users/auth")
         setUserId(data.id)
         setFormData({
             ...formData,
@@ -105,7 +106,7 @@ const EditProfile = () => {
             })
         }))
         const imageUrl = uploadUrl.split('?')[0]
-        const res = await axios.post("/users/update-profile", { ...formData, id: userId, profileImg: imageUrl })
+        const res = await axios.post(constants.uri+"/users/update-profile", { ...formData, id: userId, profileImg: imageUrl })
         console.log(res)
         if (res.status === 200) {
             toast.success("User Profile Updated")

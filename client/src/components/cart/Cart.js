@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { Fragment, useEffect, useState } from 'react'
 import { Card, Row, Col, Image, Button } from 'react-bootstrap'
 import { toast } from 'react-toastify'
+import constants from './../../utils/constants.json'
 
 const Cart = () => {
 
@@ -10,17 +11,17 @@ const Cart = () => {
 
 
     useEffect(async () => {
-        const { data } = await axios.post('/users/auth')
+        const { data } = await axios.post(constants.uri+'/users/auth')
         const userId = data.id
         setUserId(data.id)
-        const res = await axios.post('/order/cart-items', { userId })
+        const res = await axios.post(constants.uri+'/order/cart-items', { userId })
         setCartItems(res.data)
     }, [])
 
     const placeOrder = async (e) => {
         e.preventDefault()
         cartItems.map(async item=>{
-            const res = await axios.post('/order/place-order',{
+            const res = await axios.post(constants.uri+'/order/place-order',{
                 productId: item.product_id,
                 userId,
                 price: item.price,
@@ -32,7 +33,7 @@ const Cart = () => {
 
     const removeFromCart = async (item) => {
         console.log(item)
-        const res = await axios.post('/order/cart/remove-item',{userId,productId:item.product_id})
+        const res = await axios.post(constants.uri+'/order/cart/remove-item',{userId,productId:item.product_id})
         if(res.data){
             setCartItems(cartItems.filter(ele=> ele.id != item.id))
             toast('Item removed from cart')

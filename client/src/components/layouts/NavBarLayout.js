@@ -5,6 +5,7 @@ import Signup from '../auth/Signup'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import constants from './../../utils/constants.json'
 
 const NavBarLayout = props => {
   const [showModal, setShowModal] = useState(false)
@@ -14,11 +15,11 @@ const NavBarLayout = props => {
   toast.configure()
 
   useEffect(async () => {
-    const user = await axios.post("/users/auth")
+    const user = await axios.post(constants.uri+"/users/auth")
     if (user.data) {
       //LoggedIN
       setLoggedIn(true)
-      const {data} = await axios.post("/order/cart-items",{userId:user.data.id})
+      const {data} = await axios.post(constants.uri+"/order/cart-items",{userId:user.data.id})
       if(data){
         setCartItems(data.length)
       }

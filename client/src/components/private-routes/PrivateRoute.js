@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
+import constants from './../../utils/constants.json'
 
 const PrivateRoute = () => {
 
@@ -9,7 +10,7 @@ const PrivateRoute = () => {
 
     useEffect(async () => {
         try {
-            const res = await axios.post("/users/auth")
+            const res = await axios.post(constants.uri+"/users/auth")
             console.log(res,"-------------")
             if (res.status != 200) {
                 setSession(false)

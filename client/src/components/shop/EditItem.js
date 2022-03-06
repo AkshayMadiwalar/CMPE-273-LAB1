@@ -2,6 +2,8 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Form,Row,Col,Modal,Button,Card,Image } from 'react-bootstrap'
 import { toast } from 'react-toastify'
+import constants from './../../utils/constants.json'
+
 const EditItem = ({ editItem, setEditItem, item }) => {
     const [editFormData, setEditFormData] = useState({})
     const [category,setCategory] = useState("")
@@ -28,7 +30,7 @@ const EditItem = ({ editItem, setEditItem, item }) => {
     const saveChanges = async (e) => {
         e.preventDefault()
         console.log(editFormData)
-        const res = await axios.post("/shop/updateItem",
+        const res = await axios.post(constants.uri+"/shop/updateItem",
             {
                 productId: editFormData.product_id,
                 name:editFormData.product_name,

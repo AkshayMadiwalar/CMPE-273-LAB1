@@ -3,6 +3,7 @@ import React, { Fragment, useState } from 'react'
 import { Button, InputGroup, Card, FormControl, Badge } from 'react-bootstrap'
 import { Link, Navigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import constants from './../../utils/constants.json'
 
 const NameYourShop = () => {
     const [name, setName] = useState("")
@@ -14,7 +15,7 @@ const NameYourShop = () => {
     const checkAvailability = async (e) => {
         e.preventDefault()
         setShow(true)
-        const res = await axios.post("/shop/check-availablity", { name })
+        const res = await axios.post(constants.uri+"/shop/check-availablity", { name })
         if (res.status === 200) {
             setNameAvailable(true)
         } else if (res.status === 201) {
@@ -27,7 +28,7 @@ const NameYourShop = () => {
     const createNewShop = async (e) => {
         e.preventDefault()
         try {
-            const res = await axios.post("/shop/add",{name})
+            const res = await axios.post(constants.uri+"/shop/add",{name})
             if(res.data){
                 toast.success("Registered your new shop")
                 setRegistered(true)

@@ -5,6 +5,7 @@ import { Modal, Image, Row, Col, Card, Button, Form } from 'react-bootstrap'
 import defaultProfileImg from './../../images/defaultProfileImg.png'
 import { s3, bucketName } from './../../aws-config/aws.js'
 import { toast } from 'react-toastify'
+import constants from './../../utils/constants.json'
 
 const AddItem = ({ addItem, setAddItem, sellerId, shop }) => {
     const [formData, setFormData] = useState({
@@ -58,7 +59,7 @@ const AddItem = ({ addItem, setAddItem, sellerId, shop }) => {
                 })
             }))
             const imageUrl = uploadUrl.split('?')[0]
-            const res = await axios.post("/shop/addItem", { ...formData, sellerId, img: imageUrl })
+            const res = await axios.post(constants.uri+"/shop/addItem", { ...formData, sellerId, img: imageUrl })
             if (res.data) {
                 toast.success("New Item added")
                 setAddItem(false)

@@ -3,6 +3,7 @@ import { Button, Row, Col, Form, Card, Tooltip, OverlayTrigger } from 'react-boo
 import ApplyFilters from './ApplyFilters'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import constants from './../../utils/constants.json'
 
 
 const ProductList = () => {
@@ -19,9 +20,9 @@ const ProductList = () => {
 
 
     useEffect(async () => {
-        const res = await axios.post("/users/auth")
+        const res = await axios.post(constants.uri+"/users/auth")
         setUserId(res.data.id)
-        const fav = await axios.post('/users/myFavorites', { id: res.data.id })
+        const fav = await axios.post(constants.uri+'/users/myFavorites', { id: res.data.id })
         console.log(fav.data)
 
         var favItems = []
@@ -31,7 +32,7 @@ const ProductList = () => {
         setFavorites(favItems)
 
         //Get all products
-        const { data } = await axios.get('/dashboard/products')
+        const { data } = await axios.get(constants.uri+'/dashboard/products')
         console.log(data)
         const grid = []
         for (var i = 0; i < data.length; i = i + 4) {
@@ -90,7 +91,7 @@ const ProductList = () => {
 
         reqbody.order = order
 
-        const { data } = await axios.post(`/products/${url}`, reqbody)
+        const { data } = await axios.post(constants.uri+`/products/${url}`, reqbody)
         const grid = []
         for (var i = 0; i < data.length; i = i + 4) {
             var ar = []
@@ -118,7 +119,7 @@ const ProductList = () => {
             const index = fav.indexOf(product.product_id)
             if (index != -1) {
                 try {
-                    const res = await axios.post("/users/remove-from-favorites", { id: userId, productId: product.product_id })
+                    const res = await axios.post(constants.uri+"/users/remove-from-favorites", { id: userId, productId: product.product_id })
                     if (res.data) {
                         fav.splice(index, 1)
                         setFavorites(fav)
@@ -131,7 +132,7 @@ const ProductList = () => {
         } else {
             //Add to favorites
             try {
-                const res = await axios.post("/users/add-to-favorites", { id: userId, productId: product.product_id })
+                const res = await axios.post(constants.uri+"/users/add-to-favorites", { id: userId, productId: product.product_id })
                 setFavorites([...favorites, product.product_id])
                 toast("Added to your favorites collection!", { position: 'top-center' })
             } catch (error) {

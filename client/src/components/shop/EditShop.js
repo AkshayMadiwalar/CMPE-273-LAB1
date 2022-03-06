@@ -5,6 +5,7 @@ import { Navigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import defaultShopImg from './../../images/defaultShop.png'
 import {s3,bucketName} from './../../aws-config/aws.js'
+import constants from './../../utils/constants.json'
 
 const EditShop = ({ editShop, setEditShop, shopName, shop }) => {
 
@@ -43,7 +44,7 @@ const EditShop = ({ editShop, setEditShop, shopName, shop }) => {
             const imageUrl = uploadUrl.split('?')[0]
             console.log(imageUrl)
             console.log(updateFormData)
-            const res = await axios.post("/shop/update",
+            const res = await axios.post(constants.uri+"/shop/update",
                 {
                     name: updateFormData.name,
                     email: updateFormData.email,

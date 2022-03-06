@@ -4,6 +4,7 @@ import { Fragment } from 'react'
 import { Card, Row, Col, Image } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import defaultShop from './../../images/defaultShop.png'
+import constants from './../../utils/constants.json'
 
 const MyShops = () => {
 
@@ -11,9 +12,9 @@ const MyShops = () => {
 
     useEffect(async () => {
         const token = window.localStorage.getItem("userdetails")
-        const { data } = await axios.post("/users/auth", { token })
+        const { data } = await axios.post(constants.uri+"/users/auth", { token })
         const ownerId = data.id
-        const res = await axios.post("/shop/myShops", { ownerId })
+        const res = await axios.post(constants.uri+"/shop/myShops", { ownerId })
         setShops(res.data)
     }, [])
 

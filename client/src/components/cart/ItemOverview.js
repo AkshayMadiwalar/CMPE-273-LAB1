@@ -3,6 +3,7 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { Carousel, Row, Col, Form, Button } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import constants from './../../utils/constants.json'
 
 const ItemOverview = () => {
 
@@ -13,7 +14,7 @@ const ItemOverview = () => {
 
     useEffect(async () => {
         const id = params.id
-        const { data } = await axios.get(`/users/product/${id}`)
+        const { data } = await axios.get(constants.uri+`/users/product/${id}`)
         setProduct(data)
     }, [])
 
@@ -26,10 +27,10 @@ const ItemOverview = () => {
         e.preventDefault()
         const productId = params.id
         try {
-            const {data} = await axios.post('/users/auth')
+            const {data} = await axios.post(constants.uri+'/users/auth')
             const userId = data.id
             const price = product.price
-            const res = await axios.post('/order/add-to-cart',{productId,userId,quantity,price})
+            const res = await axios.post(constants.uri+'/order/add-to-cart',{productId,userId,quantity,price})
             toast('Item added to your Cart!')
         } catch (error) {
             toast('Failed to add to Cart')

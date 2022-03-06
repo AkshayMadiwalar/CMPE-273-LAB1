@@ -8,6 +8,7 @@ import axios from 'axios'
 import AddItem from './AddItem'
 import { Link } from 'react-router-dom'
 import EditItem from './EditItem'
+import constants from './../../utils/constants.json'
 
 const Shop = () => {
 
@@ -24,9 +25,9 @@ const Shop = () => {
     useEffect(async () => {
         setShopName(params.name)
         const n = params.name
-        const res = await axios.post("/shop/byname", { name: n })
+        const res = await axios.post(constants.uri+"/shop/byname", { name: n })
         const sellerId = res.data.seller_id
-        const { data } = await axios.post("/shop/getItems", { sellerId })
+        const { data } = await axios.post(constants.uri+"/shop/getItems", { sellerId })
         setShop(res.data)
         var grid = []
         for (var i = 0; i < data.length; i = i + 3) {

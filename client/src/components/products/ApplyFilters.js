@@ -1,6 +1,7 @@
 import React from 'react'
 import { Col, Form, Modal, Button, Row } from 'react-bootstrap'
 import axios from 'axios'
+import constants from './../../utils/constants.json'
 
 const ApplyFilters = ({ showApplyFilter, setShowApplyFilter, filters, setFilters, products, setProducts }) => {
 
@@ -16,7 +17,7 @@ const ApplyFilters = ({ showApplyFilter, setShowApplyFilter, filters, setFilters
 
     const apply = async () => {
         const {category, price} = filters
-        const {data} = await axios.post("/products/filter",{category,price})
+        const {data} = await axios.post(constants.uri+"/products/filter",{category,price})
         const grid = []
         for (var i = 0; i < data.length; i = i + 4) {
             var ar = []
