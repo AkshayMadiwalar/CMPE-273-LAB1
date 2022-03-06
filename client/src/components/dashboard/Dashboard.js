@@ -94,7 +94,7 @@ const Dashboard = () => {
                             <h2 style={{ textAlign: 'center' }}>Welcome back Akshay!</h2>
                         )}
 
-                        <h3 style={{ textAlign: 'center' }}>Explore one-of-a-kind finds from independent makers</h3>
+                        <h3 style={{ textAlign: 'center' }}>Explore one-of-a-kind finds from independent </h3>
                     </Row>
                     <br />
                     <br />
