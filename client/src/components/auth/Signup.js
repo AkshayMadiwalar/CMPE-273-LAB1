@@ -5,6 +5,7 @@ import axios from 'axios'
 import { ToastContainer, toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 import { Navigate } from 'react-router-dom'
+import constants from './../../utils/constants.json'
 
 const Signup = ({ showModal, setShowModal }) => {
     const [signin, setSignin] = useState(true)
@@ -48,7 +49,7 @@ const Signup = ({ showModal, setShowModal }) => {
         e.preventDefault()
         console.log(registerForm)
         try {
-            const res = await axios.post("/users/register", registerForm)
+            const res = await axios.post(constants.uri+"/users/register", registerForm)
             if (res.status === 200) {
                 window.localStorage.setItem("userdetails",res.data.token)
                 setShowModal(false)
@@ -66,11 +67,11 @@ const Signup = ({ showModal, setShowModal }) => {
     const onSubmitLogin = async (e) => {
         e.preventDefault()
         try {
-            const res = await axios.post("http://13.233.215.157/users/login",{email:loginForm.loginEmail,password:loginForm.loginPassword})
+            const res = await axios.post(constants.uri+"/users/login",{email:loginForm.loginEmail,password:loginForm.loginPassword})
             if(res.status === 200 ){
                 window.localStorage.setItem("userdetails",res.data.token)
                 setShowModal(false)
-                toast.success("Loggedin",{
+                toast.success("Loggedin", {
                     position: "top-center",
                 })
                 setLoggedIn(true)

@@ -24,8 +24,7 @@ if (localStorage.userdetails) {
 function App() {
   return (
     <Fragment>
-
-
+      
       <Card style={{margin:0,padding:0}}> 
         <Card.Body style={{margin:0,padding:0}}>
           <ToastContainer position='top-center' />
