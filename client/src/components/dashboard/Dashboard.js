@@ -139,7 +139,7 @@ const Dashboard = () => {
             <Card>
                 <Card.Title style={{ marginRight: "10%", marginLeft: "10%", textAlign: 'center' }}>Discover our unique products! Shop NOW.</Card.Title>
                 <Card.Body style={{ marginRight: "10%", marginLeft: "10%" }}>
-                    {products && products.map(productRow => (
+                    {products && products.length >0 && products.map(productRow => (
                         <Row>
                             {productRow.map(product => (
                                 <Col sm={4}>
