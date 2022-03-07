@@ -26,8 +26,11 @@ exports.myShops = ({ownerId},result) => {
 }
 
 exports.updateSeller = ({sellerId,name,ownerName,email,phNumber,img},result) => {
+    console.log("model body: ", {sellerId,name,ownerName,email,phNumber,img})
     const sql = `update seller set name = '${name}', owner_name='${ownerName}', email='${email}', ph_number='${phNumber}', img='${img}' where seller_id = '${sellerId}'`
     db.query(sql,(err,res)=>{
+        console.log('---------err:',err)
+        console.log('---------res:',res)
         if(err) {
             result(err,null)
         }else{

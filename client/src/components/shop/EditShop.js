@@ -55,6 +55,7 @@ const EditShop = ({ editShop, setEditShop, shopName, shop }) => {
                 })
             console.log(res)
             if (res.data) {
+                console.log("------------------------------------------------------------shop updated")
                 toast.success("Shop Updated")
                 setEditShop(false)
                 setUpdated(true)

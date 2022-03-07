@@ -69,7 +69,7 @@ const NameYourShop = () => {
                 <div style={{ marginLeft: "15%", marginRight: "15%", textAlign: 'center' }}>
                     <h3><Badge bg="success"><i class="fa fa-check" aria-hidden="true"></i>{' '}Available</Badge></h3><br />
                     <Button variant="outline-warning" className='rounded-pill' onClick={(e)=>createNewShop(e)}>Register your new Shop</Button>
-                    <Link to={`/shop/${name}/home`}><span style={{ textDecoration: 'underline', cursor: 'pointer' }}>Create your new Shop ?</span></Link>
+                    {/* <Link to={`/shop/${name}/home`}><span style={{ textDecoration: 'underline', cursor: 'pointer' }}>Create your new Shop ?</span></Link> */}
                 </div>
             )}
 

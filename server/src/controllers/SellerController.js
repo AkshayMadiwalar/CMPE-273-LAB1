@@ -15,6 +15,7 @@ exports.createSeller = (req,res) => {
 
 exports.updateShop = (req,res) => {
     const {sellerId,name,ownerName,email,phNumber,img} = req.body
+    console.log("---------------------------",req.body)
     try {
         SellerModel.updateSeller({sellerId,name,ownerName,email,phNumber,img},(err,data)=>{
             console.log(err)
@@ -39,7 +40,7 @@ exports.checkAvailability = (req,res) => {
             if(data.length > 0){
                 return res.status(201).json({message:"Name not Available"})
             }
-
+            
             return res.json({message:"Name Available"})
         })
     } catch (error) {

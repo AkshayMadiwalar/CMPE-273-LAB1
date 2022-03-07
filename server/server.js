@@ -7,11 +7,11 @@ app.use(cors())
 //Init Middleware
 app.use(express.json({extended:false}))
 
-app.use('/users',require('./src/routes/user.routes'))
-app.use('/shop',require('./src/routes/seller.routes'))
-app.use('/dashboard',require('./src/routes/dashboard.routes'))
-app.use('/order',require('./src/routes/order.routes'))
-app.use('/products',require('./src/routes/products.routes'))
+app.use('/api/users',require('./src/routes/user.routes'))
+app.use('/api/shop',require('./src/routes/seller.routes'))
+app.use('/api/dashboard',require('./src/routes/dashboard.routes'))
+app.use('/api/order',require('./src/routes/order.routes'))
+app.use('/api/products',require('./src/routes/products.routes'))
 
 const PORT = 8585
 

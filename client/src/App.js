@@ -67,9 +67,9 @@ function App() {
 
           </Routes>
         </Card.Body>
-        <Card.Footer style={{backgroundColor:"#1a125c",color:'white'}}>
+        {/* <Card.Footer style={{backgroundColor:"#1a125c",color:'white'}}>
             <Footer />
-        </Card.Footer>
+        </Card.Footer> */}
       </Card>
 
     </Fragment>

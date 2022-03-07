@@ -76,7 +76,8 @@ const Dashboard = () => {
         } else {
             //Add to favorites
             try {
-                const res = await axios.post(constants.uri+"/users/add-to-favorites", { id: user.id, productId: product.product_id })
+                console.log(user)
+                const res = await axios.post(constants.uri+"/users/add-to-favorites", { id: user, productId: product.product_id })
                 setFavorites([...favorites, product.product_id])
                 toast("Added to your favorites collection!", { position: 'top-center' })
             } catch (error) {
