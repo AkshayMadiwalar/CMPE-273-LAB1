@@ -189,10 +189,10 @@ const Dashboard = () => {
                                             </Card.Title>
                                             <Card.Text>
                                                 <Row>
-                                                    {product.description.length < 30 ? (<span style={{ fontSize: 14 }}>product.description</span>) : (<span style={{ fontSize: 14 }}>{product.description.slice(0, 30)}...</span>)}
+                                                    {product && product.description.length < 30 ? (<span style={{ fontSize: 14 }}>product.description</span>) : (<span style={{ fontSize: 14 }}>{product.description.slice(0, 30)}...</span>)}
                                                 </Row>
                                                 <Row>
-                                                    <Col>{product.quantity > 0 ? (<span>In Stock ({product.quantity} available)</span>) : (<span style={{ color: 'red' }}>Out of Stock</span>)}</Col>
+                                                    <Col>{product && product.quantity > 0 ? (<span>In Stock ({product.quantity} available)</span>) : (<span style={{ color: 'red' }}>Out of Stock</span>)}</Col>
                                                 </Row>
                                             </Card.Text>
                                         </Card.Body>
