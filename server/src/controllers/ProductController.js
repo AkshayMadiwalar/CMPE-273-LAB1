@@ -1,4 +1,5 @@
 const ProductModel = require('./../models/ProductModel')
+const elasticClient = require('./../../config/ElasticClient')
 
 exports.create = (req,res)=>{
     const {sellerId,name,category,description,price,quantity,img} = req.body
@@ -11,6 +12,28 @@ exports.create = (req,res)=>{
         return res.status(500).json({message:"Server error"})
     }
 }
+
+exports.getProduct = (req,res) => {
+    console.log(req.params.search)
+    const searchParameter = req.params.search
+    let query = {
+        index : 'products'
+    }
+    if(searchParameter){
+        query.q = `*${searchParameter}*`
+    }
+    elasticClient.search(query).then(resp=>{
+        return res.json({
+            products: resp.hits.hits
+        })
+    }).catch(err=>{
+        console.log(err)
+        return res.status(500).json({
+            message:err
+        })
+    })
+
+}   
 
 exports.editProduct = (req,res) => {
     const {productId,name,category,description,price,quantity,img} = req.body

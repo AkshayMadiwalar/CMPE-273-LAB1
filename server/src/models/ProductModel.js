@@ -1,5 +1,6 @@
 var db = require('../../config/db')
 const uuid = require('uuid').v4
+const elasticClient = require('./../../config/ElasticClient')
 
 exports.createProduct = ({sellerId,name,category,description,price,quantity,img},result) => {
     const id = uuid()
@@ -10,6 +11,14 @@ exports.createProduct = ({sellerId,name,category,description,price,quantity,img}
             result(err,null)
         }
         else{
+            //Add product to elastic client index
+            elasticClient.index({
+                index:'products',
+                body:{id,sellerId,name,category,description,price,quantity,img}
+            }).then(resp => {
+                console.log("Product indexed")
+            }).catch(err=>{})
+
             result(null,res)
         }
     })
