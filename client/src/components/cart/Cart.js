@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { Fragment, useEffect, useState } from 'react'
 import { Card, Row, Col, Image, Button } from 'react-bootstrap'
+import { Navigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import constants from './../../utils/constants.json'
 
@@ -8,7 +9,9 @@ const Cart = () => {
 
     const [cartItems, setCartItems] = useState([])
     const [userId,setUserId] = useState()
+    const [orderPlaced,setOrderPlaced] = useState(false)
 
+    const  [subtotal,setsubtotal] = useState(0)
 
     useEffect(async () => {
         const { data } = await axios.post(constants.uri+'/users/auth')
@@ -16,19 +19,35 @@ const Cart = () => {
         setUserId(data.id)
         const res = await axios.post(constants.uri+'/order/cart-items', { userId })
         setCartItems(res.data)
+        const items = res.data
+
+        //calculate subtotal
+        var total = 0
+        items.map(item=> {  
+            total = total + item.quantity*item.price
+        })
+        setsubtotal(total)
     }, [])
 
     const placeOrder = async (e) => {
         e.preventDefault()
+        var  i = 0;
         cartItems.map(async item=>{
+            i++
             const res = await axios.post(constants.uri+'/order/place-order',{
                 productId: item.product_id,
                 userId,
                 price: item.price,
                 quantity: item.quantity
             })
-            console.log(res)
+            console.log(cartItems.length,i)
+            if(i == cartItems.length){
+                toast.success("Order Placed")
+                setOrderPlaced(true)
+            }
+            window.localStorage.setItem('cart',window.localStorage.getItem('cart')-1)
         })
+        toast.success()
     }
 
     const removeFromCart = async (item) => {
@@ -38,7 +57,19 @@ const Cart = () => {
             setCartItems(cartItems.filter(ele=> ele.id != item.id))
             toast('Item removed from cart')
             
+            //Calculate subtotal
+            var total = 0
+            cartItems.filter(ele=> ele.id != item.id).map(item=>{
+                total = total + item.quantity*item.price
+            })
+            setsubtotal(total)
+
+            window.localStorage.setItem('cart',window.localStorage.getItem('cart')-1)
         }
+    }
+
+    if(orderPlaced){
+        return <Navigate to="/myOrders"/>
     }
 
     return (
@@ -90,7 +121,7 @@ const Cart = () => {
                             <hr/>
                             <Row>
                                 <Col><h6>Sub Total:</h6></Col>
-                                <Col><span style={{fontWeight:'lighter'}}>$102.82</span></Col>
+                                <Col><span style={{fontWeight:'lighter'}}>${subtotal}</span></Col>
                             </Row>
                             <Row>
                                 <Col><h6>Delivery:</h6></Col>
@@ -99,7 +130,7 @@ const Cart = () => {
                             <br />
                             <Row>
                                 <Col><h6>Total:</h6></Col>
-                                <Col><span style={{fontWeight:'lighter'}}>$102.82</span></Col>
+                                <Col><span style={{fontWeight:'lighter'}}>${subtotal}</span></Col>
                             </Row>
                             <br/>
                             <Row>

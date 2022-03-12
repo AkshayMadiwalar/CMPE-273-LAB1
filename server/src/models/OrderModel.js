@@ -106,3 +106,11 @@ exports.placeOrder = ({productId,userId,price,quantity},result) => {
         }
     })
 }   
+
+exports.myOrders = ({id},result) => {
+    const sql  = `select * from orders where user_id = '${id}'`
+    db.query(sql,(err,res)=>{
+        if(err) result(err,null)
+        else    result(null,res)
+    })
+}

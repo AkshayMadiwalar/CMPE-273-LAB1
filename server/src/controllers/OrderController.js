@@ -39,3 +39,11 @@ exports.placeOrder = (req,res) => {
         return res.status(500).json({message:"Server error"+error})
     }
 }
+
+exports.myOrders = (req,res) => {
+    const {id} = req.body
+    OrderModel.myOrders({id},(err,data)=>{
+        if(err) return res.status(500).json({message:'Server Error'})
+        return res.json(data)
+    })
+}

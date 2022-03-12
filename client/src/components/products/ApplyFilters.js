@@ -7,6 +7,10 @@ const ApplyFilters = ({ showApplyFilter, setShowApplyFilter, filters, setFilters
 
     const getCategoryValue = (e) => {
         e.preventDefault()
+        if(e.target.value === "All"){
+            setFilters({ ...filters, category: "" })
+            return 
+        }
         setFilters({ ...filters, category: e.target.value })
     }
 
@@ -58,6 +62,7 @@ const ApplyFilters = ({ showApplyFilter, setShowApplyFilter, filters, setFilters
                     <Col sm={1}></Col>
                     <Col>
                         <Form>
+                            <Form.Check type='radio' label='All' onClick={(e) => { getCategoryValue(e) }} value="All" />
                             <Form.Check type='radio' label='Clothing' onClick={(e) => { getCategoryValue(e) }} value="Clothing" />
                             <Form.Check type='radio' label='Jewelry' onClick={(e) => getCategoryValue(e)} value="Jewelry" />
                             <Form.Check type='radio' label='Entertainment' onClick={(e) => getCategoryValue(e)} value="Entertainment" />

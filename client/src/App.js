@@ -16,6 +16,7 @@ import PrivateRoute from './components/private-routes/PrivateRoute';
 import ProductList from './components/products/ProductList';
 import { Card } from 'react-bootstrap';
 import Footer from './components/layouts/Footer';
+import MyOrders from './components/profile/MyOrders';
 
 if (localStorage.userdetails) {
   setAuthToken(localStorage.userdetails)
@@ -33,8 +34,10 @@ function App() {
 
             <Route path="/" element={<Dashboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
-
+            <Route path="/dashboard/:search" element={<ProductList />} />
+            
             <Route path="/products" element={<ProductList />} />
+          
 
 
             <Route path="/profile" element={<PrivateRoute />}>
@@ -55,6 +58,10 @@ function App() {
 
             <Route path="/shop/myShops" element={<PrivateRoute />}>
               <Route path="/shop/myShops" element={<MyShops />} />
+            </Route>
+
+            <Route path="/myOrders" element={<PrivateRoute />}>
+              <Route path="/myOrders" element={<MyOrders />} />
             </Route>
 
             <Route path="/item/:id/overview" element={<PrivateRoute />}>

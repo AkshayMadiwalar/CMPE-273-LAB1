@@ -75,6 +75,7 @@ const Signup = ({ showModal, setShowModal }) => {
                     position: "top-center",
                 })
                 setLoggedIn(true)
+                window.location.reload(false)
             }
         } catch (error) {
             setShowModal(false)

@@ -8,7 +8,7 @@ import constants from './../../utils/constants.json'
 const ItemOverview = () => {
 
     const [product, setProduct] = useState({})
-    const [quantity,setQuantity] = useState()
+    const [quantity,setQuantity] = useState(1)
 
     const params = useParams()
 
@@ -31,6 +31,8 @@ const ItemOverview = () => {
             const userId = data.id
             const price = product.price
             const res = await axios.post(constants.uri+'/order/add-to-cart',{productId,userId,quantity,price})
+            console.log(window.localStorage.getItem('cart'))
+            window.localStorage.setItem('cart',window.localStorage.getItem('cart')+1)
             toast('Item added to your Cart!')
         } catch (error) {
             toast('Failed to add to Cart')
@@ -66,10 +68,10 @@ const ItemOverview = () => {
                             <Form.Label>Number of Items</Form.Label>
                             <Form.Control placeholder="Enter Quantity"  value={quantity} onChange={(e)=>onChangeQuantity(e)}/>
                         </Form.Group>
-                        <Button variant='outline-warning' className='rounded-pill' style={{width:"100%"}}>Buy it now</Button>
+                        <Button variant='outline-warning' className='rounded-pill' style={{width:"100%"}} disabled={quantity>0 &&  product.quantity > 0 ? false : true}>Buy it now</Button>
                         <br/>
                         <br/>
-                        <Button variant='warning' className='rounded-pill' onClick={(e)=>addToCart(e)} style={{width:"100%"}}>Add to cart</Button>
+                        <Button variant='warning' className='rounded-pill' onClick={(e)=>addToCart(e)} style={{width:"100%"}} disabled={quantity>0 && product.quantity > 0 ? false : true}>Add to cart</Button>
                     </Col>
                 </Row>
             )}
