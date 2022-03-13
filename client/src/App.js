@@ -34,7 +34,7 @@ function App() {
 
             <Route path="/" element={<Dashboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/dashboard/:search" element={<ProductList />} />
+            <Route path="/products/:search" element={<ProductList />} />
             
             <Route path="/products" element={<ProductList />} />
           
@@ -75,8 +75,11 @@ function App() {
           </Routes>
         </Card.Body>
         {/* <Card.Footer style={{backgroundColor:"#1a125c",color:'white'}}>
-            <Footer />
+            
         </Card.Footer> */}
+        <footer style={{textAlign:'center',padding:3, position: "fixed", left: 0,bottom: 0,width: "100%"}}>
+        <Footer />
+        </footer>
       </Card>
 
     </Fragment>

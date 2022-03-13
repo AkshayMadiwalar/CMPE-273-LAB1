@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { Fragment, useEffect, useState } from 'react'
 import { Carousel, Row, Col, Form, Button } from 'react-bootstrap'
-import { useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import constants from './../../utils/constants.json'
 
@@ -9,6 +9,7 @@ const ItemOverview = () => {
 
     const [product, setProduct] = useState({})
     const [quantity,setQuantity] = useState(1)
+    const [buyNowEnabled,setBuyNowENabled] = useState(false)
 
     const params = useParams()
 
@@ -37,6 +38,27 @@ const ItemOverview = () => {
         } catch (error) {
             toast('Failed to add to Cart')
         }
+    }
+
+    const buyNow = async (e) => {
+        e.preventDefault()
+        const productId = params.id
+        try {
+            const {data} = await axios.post(constants.uri+'/users/auth')
+            const userId = data.id
+            const price = product.price
+            const res = await axios.post(constants.uri+'/order/add-to-cart',{productId,userId,quantity,price})
+            console.log(window.localStorage.getItem('cart'))
+            window.localStorage.setItem('cart',window.localStorage.getItem('cart')+1)
+            toast('Item added to your Cart!')
+            setBuyNowENabled(true)
+        } catch (error) {
+            toast('Failed to add to Cart')
+        }
+    }
+
+    if(buyNowEnabled){
+        return <Navigate to="/cart"/>
     }
 
     return (
@@ -68,7 +90,7 @@ const ItemOverview = () => {
                             <Form.Label>Number of Items</Form.Label>
                             <Form.Control placeholder="Enter Quantity"  value={quantity} onChange={(e)=>onChangeQuantity(e)}/>
                         </Form.Group>
-                        <Button variant='outline-warning' className='rounded-pill' style={{width:"100%"}} disabled={quantity>0 &&  product.quantity > 0 ? false : true}>Buy it now</Button>
+                        <Button variant='outline-warning' className='rounded-pill' onClick={(e)=>buyNow(e)} style={{width:"100%"}} disabled={quantity>0 &&  product.quantity > 0 ? false : true}>Buy it now</Button>
                         <br/>
                         <br/>
                         <Button variant='warning' className='rounded-pill' onClick={(e)=>addToCart(e)} style={{width:"100%"}} disabled={quantity>0 && product.quantity > 0 ? false : true}>Add to cart</Button>

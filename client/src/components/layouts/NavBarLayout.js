@@ -55,7 +55,7 @@ const NavBarLayout = props => {
   }
 
   if (search) {
-    return <Navigate to={`/dashboard/${searchParameter}`} />
+    return <Navigate to={`/products/${searchParameter}`} />
   }
 
   return (
@@ -118,7 +118,7 @@ const NavBarLayout = props => {
 
                   <NavDropdown title={(<i class="fa fa-user-circle" aria-hidden="true"></i>)} id="basic-nav-dropdown">
                     <NavDropdown.Item ><Link to="/profile" style={{ textDecoration: 'none', color: 'black' }}><span>My Profile</span></Link></NavDropdown.Item>
-                    <NavDropdown.Item >My Purchases</NavDropdown.Item>
+                    <NavDropdown.Item ><Link to="/myOrders" style={{ textDecoration: 'none', color: 'black' }}><span>My Purchases</span></Link></NavDropdown.Item>
                     <NavDropdown.Item ><Link to="/shop/myShops" style={{ textDecoration: 'none', color: 'black' }}><span>My Shops</span></Link></NavDropdown.Item>
                   </NavDropdown>
 
