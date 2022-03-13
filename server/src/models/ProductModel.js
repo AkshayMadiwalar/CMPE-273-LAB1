@@ -4,38 +4,51 @@ const elasticClient = require('./../../config/ElasticClient')
 
 exports.createProduct = ({ sellerId, name, category, description, price, quantity, img }, result) => {
     const id = uuid()
-    const sql = `insert into products(product_id,seller_id,product_name,category,description,price,quantity,img,sales)
-                values('${id}','${sellerId}','${name}','${category}','${description}','${price}','${quantity}','${img}',0)`
-    db.query(sql, (err, res) => {
-        if (err) {
-            result(err, null)
-        }
-        else {
-            //Add product to elastic client index
-            elasticClient.index({
-                index: 'products',
-                body: { id, sellerId, name, category, description, price, quantity, img }
-            }).then(resp => {
-                console.log("Product indexed")
-            }).catch(err => { })
+    elasticClient.index({
+        index: 'products',
+        body: { id, sellerId, name, category, description, price, quantity, img }
+    }).then(resp => {
+        const elasticId = resp._id
+        const sql = `insert into products(elastic_id, product_id,seller_id,product_name,category,description,price,quantity,img,sales)
+        values('${elasticId}','${id}','${sellerId}','${name}','${category}','${description}','${price}','${quantity}','${img}',0)`
+        db.query(sql, (err, res) => {
+            if (err) {
+                result(err, null)
+            }
+            else {
+                result(null, res)
+            }
+        })
+    }).catch(err => { })
 
-            result(null, res)
-        }
-    })
 }
 
-exports.editProduct = ({ productId, name, category, description, price, quantity, img }, result) => {
-    const sql = `update products set product_name = '${name}', category='${category}', description = "${description}",
-                    price='${price}', quantity='${quantity}', img='${img}' where product_id = '${productId}'`
-    db.query(sql, (err, res) => {
-        console.log("--------------------", err)
-        if (err) {
-            result(err, null)
+exports.editProduct = ({ elasticId, productId, name, category, description, price, quantity, img }, result) => {
+    console.log("------edit product-----", elasticId)
+    elasticClient.update({
+        index: 'products',
+        id: elasticId,
+        body: {
+            doc: { productId, name, category, description, price, quantity, img }
         }
-        else {
-            result(null, res)
-        }
+    }).then(resp => {
+        console.log(resp)
+        const sql = `update products set product_name = '${name}', category='${category}', description = "${description}",
+        price='${price}', quantity='${quantity}', img='${img}' where product_id = '${productId}'`
+        db.query(sql, (err, res) => {
+            console.log("--------------------", err)
+            if (err) {
+                result(err, null)
+            }
+            else {
+                result(null, res)
+            }
+        })
+    }).catch(err => {
+        console.log(err)
+        result(err, null)
     })
+
 }
 
 exports.getAll = ({ }, result) => {
@@ -145,7 +158,7 @@ exports.productsSortBySales = ({ category, price, order }, result) => {
     })
 }
 
-exports.incrementSales = ({ productId, quantity }, result) => {
+exports.incrementSales = ({ elasticId, productId, quantity }, result) => {
     const salessql = `select sales from products where product_id = '${productId}'`
     const quantitysql = `select quantity from products where product_id = '${productId}'`
 
@@ -158,18 +171,31 @@ exports.incrementSales = ({ productId, quantity }, result) => {
             console.log(err)
             if (err)
                 return result(err, null)
-            
+
             const current_quantity = res[0].quantity
 
-            const sql = `update products set sales = '${sales + parseInt(quantity)}', quantity = '${current_quantity - parseInt(quantity)}' where product_id = '${productId}'`
-            db.query(sql, (err, res) => {
+            console.log("----------------elastic id :------------",elasticId)
+            elasticClient.update({
+                index: 'products',
+                id: elasticId,
+                body: {
+                    doc: { sales: sales + parseInt(quantity), quantity: current_quantity - parseInt(quantity) }
+                }
+            }).then(resp => {
+                console.log(resp)
+                const sql = `update products set sales = '${sales + parseInt(quantity)}', quantity = '${current_quantity - parseInt(quantity)}' where product_id = '${productId}'`
+                db.query(sql, (err, res) => {
+                    console.log(err)
+                    if (err) {
+                        result(err, null)
+                    }
+                    else {
+                        result(null, res)
+                    }
+                })
+            }).catch(err => {
                 console.log(err)
-                if (err) {
-                    result(err, null)
-                }
-                else {
-                    result(null, res)
-                }
+                result(err, null)
             })
         })
 

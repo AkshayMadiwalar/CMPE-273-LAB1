@@ -36,10 +36,10 @@ exports.getProduct = (req,res) => {
 }   
 
 exports.editProduct = (req,res) => {
-    const {productId,name,category,description,price,quantity,img} = req.body
+    const {elasticId,productId,name,category,description,price,quantity,img} = req.body
     try {
         console.log(productId,name,category,description,price,quantity,img)
-        ProductModel.editProduct({productId,name,category,description,price,quantity,img},(err,data)=>{
+        ProductModel.editProduct({elasticId,productId,name,category,description,price,quantity,img},(err,data)=>{
             console.log(err)
             if(err) return res.status(500).json({message:"Server error : \n"+ err})
             if(data)

@@ -34,7 +34,9 @@ const Cart = () => {
         var  i = 0;
         cartItems.map(async item=>{
             i++
+            console.log(item,"----------------------------")
             const res = await axios.post(constants.uri+'/order/place-order',{
+                elasticId: item.elastic_id,
                 productId: item.product_id,
                 userId,
                 price: item.price,

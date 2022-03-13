@@ -1,11 +1,12 @@
 var db = require('../../config/db')
 const uuid = require('uuid').v4
 
-exports.addToCart = ({productId,userId,sellerId,productName,img,category,description,price,quantity},result) => {
+exports.addToCart = ({elastic_id,productId,userId,sellerId,productName,img,category,description,price,quantity},result) => {
     const id = uuid()
     const sql = `insert into cart (
         id,
         product_id,
+        elastic_id,
         user_id,
         seller_id,
         product_name,
@@ -17,6 +18,7 @@ exports.addToCart = ({productId,userId,sellerId,productName,img,category,descrip
     ) values(
         '${id}',
         '${productId}',
+        '${elastic_id}',
         '${userId}',
         '${sellerId}',
         '${productName}',

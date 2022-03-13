@@ -8,8 +8,8 @@ exports.addToCart = (req,res) => {
         if(err) return res.status(500).json({message:'Server Error'})
 
         if(data.length > 0){
-            const {seller_id,product_name,img,category,description} = data[0]
-            CartModel.addToCart({productId,userId,sellerId:seller_id,productName:product_name,img,category,description,price,quantity},(err,data)=>{
+            const {elastic_id,seller_id,product_name,img,category,description} = data[0]
+            CartModel.addToCart({elastic_id,productId,userId,sellerId:seller_id,productName:product_name,img,category,description,price,quantity},(err,data)=>{
                 if(err) return res.status(500).json({message:'Server error'})
                 if(data){
                     return res.json({message:'Added to Cart'})
