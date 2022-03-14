@@ -33,13 +33,13 @@ function App() {
           <Routes>
 
             <Route path="/" element={<Dashboard />} />
+
             <Route path="/dashboard" element={<Dashboard />} />
+
+            <Route path="/products" element={<ProductList />} />
+
             <Route path="/products/:search" element={<ProductList />} />
             
-            <Route path="/products" element={<ProductList />} />
-          
-
-
             <Route path="/profile" element={<PrivateRoute />}>
               <Route path="/profile" element={<UserProfile />} />
             </Route>
@@ -73,6 +73,7 @@ function App() {
             </Route>
 
           </Routes>
+
         </Card.Body>
         {/* <Card.Footer style={{backgroundColor:"#1a125c",color:'white'}}>
             
