@@ -24,7 +24,7 @@ const MyOrders = () => {
                                     <Card.Text>
                                         <Row>
                                             <Col sm={3}>
-                                                <Image src={order.product_img}></Image>    
+                                                <Image src={order.product_img} style={{width:"100%",height:"210px"}}></Image>    
                                             </Col>
                                             <Col sm={1}></Col>
                                             <Col sm={5}>

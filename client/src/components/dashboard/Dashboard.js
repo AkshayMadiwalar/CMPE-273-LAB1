@@ -158,7 +158,7 @@ const Dashboard = () => {
                                 <Col sm={4}>
                                     <Link to={`/item/${product.product_id}/overview`} style={{ textDecoration: 'none', color: 'black' }}>
                                         <Card className='product-card'>
-                                            <Card.Img variant="top" src={product.img} />
+                                            <Card.Img variant="top" style={{width:"100%",height:"230px"}} src={product.img} />
                                             <Card.Body>
                                                 <Card.Title>
                                                     <Row>

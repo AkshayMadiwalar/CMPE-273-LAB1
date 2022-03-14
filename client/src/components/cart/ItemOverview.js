@@ -72,8 +72,7 @@ const ItemOverview = () => {
                                     className="d-block w-100"
                                     src={product.img}
                                     alt="First slide"
-                                    width={200}
-                                    height={450}
+                                    style={{width:"100%",height:"400px"}}
                                 />
 
                             </Carousel.Item>
