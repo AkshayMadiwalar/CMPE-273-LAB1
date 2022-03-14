@@ -28,7 +28,7 @@ const Dashboard = () => {
         const { data } = await axios.get(constants.uri + '/dashboard/products')
         console.log(data)
         const grid = []
-        for (var i = 0; i < data.length; i = i + 4) {
+        for (var i = 0; i < data.length; i = i + 3) {
             var ar = []
             if (data[i]) {
                 ar.push(data[i])
@@ -38,9 +38,6 @@ const Dashboard = () => {
             }
             if (data[i + 2]) {
                 ar.push(data[i + 2])
-            }
-            if (data[i + 3]) {
-                ar.push(data[i + 3])
             }
             grid.push(ar)
         }

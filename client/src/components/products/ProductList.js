@@ -26,7 +26,7 @@ const ProductList = () => {
 
     const productGrid = (data) => {
         const grid = []
-        for (var i = 0; i < data.length; i = i + 4) {
+        for (var i = 0; i < data.length; i = i + 3) {
             var ar = []
             if (data[i]) {
                 ar.push(data[i])
@@ -36,9 +36,6 @@ const ProductList = () => {
             }
             if (data[i + 2]) {
                 ar.push(data[i + 2])
-            }
-            if (data[i + 3]) {
-                ar.push(data[i + 3])
             }
             grid.push(ar)
         }
@@ -116,7 +113,7 @@ const ProductList = () => {
         const { data } = await axios.post(constants.uri + `/products/${url}`, reqbody)
         console.log(data)
         const grid = []
-        for (var i = 0; i < data.length; i = i + 4) {
+        for (var i = 0; i < data.length; i = i + 3) {
             var ar = []
             if (data[i]) {
                 ar.push(data[i])
@@ -126,9 +123,6 @@ const ProductList = () => {
             }
             if (data[i + 2]) {
                 ar.push(data[i + 2])
-            }
-            if (data[i + 3]) {
-                ar.push(data[i + 3])
             }
             grid.push(ar)
         }

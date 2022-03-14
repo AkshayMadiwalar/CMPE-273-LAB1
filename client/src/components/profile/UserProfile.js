@@ -24,7 +24,7 @@ const UserProfile = props => {
 
     const setProductGrid = (data) => {
         const favItemsGrid = []
-        for (var i = 0; i < data.length; i = i + 4) {
+        for (var i = 0; i < data.length; i = i + 3) {
             var ar = []
             if (data[i]) {
                 ar.push(data[i])
@@ -34,9 +34,6 @@ const UserProfile = props => {
             }
             if (data[i + 2]) {
                 ar.push(data[i + 2])
-            }
-            if (data[i + 3]) {
-                ar.push(data[i + 3])
             }
             favItemsGrid.push(ar)
         }
