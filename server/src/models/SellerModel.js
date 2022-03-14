@@ -34,7 +34,7 @@ exports.updateSeller = ({sellerId,name,ownerName,email,phNumber,img},result) => 
         if(err) {
             result(err,null)
         }else{
-            result(null,res)
+            result(null,{sellerId,name,ownerName,email,phNumber,img})
         }
     })
 }

@@ -4,7 +4,7 @@ import { Modal, Button, Card, Row, Col, Form, Image } from 'react-bootstrap'
 import { Navigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import defaultShopImg from './../../images/defaultShop.png'
-import {s3,bucketName} from './../../aws-config/aws.js'
+import { s3, bucketName } from './../../aws-config/aws.js'
 import constants from './../../utils/constants.json'
 
 const EditShop = ({ editShop, setEditShop, shopName, shop }) => {
@@ -13,7 +13,7 @@ const EditShop = ({ editShop, setEditShop, shopName, shop }) => {
 
     const [updateFormData, setUpdateFormData] = useState({})
 
-    const [img,setImg] = useState()
+    const [img, setImg] = useState()
 
     useEffect(() => {
         setUpdateFormData(shop)
@@ -23,8 +23,9 @@ const EditShop = ({ editShop, setEditShop, shopName, shop }) => {
 
     const updateShop = async (e) => {
         e.preventDefault()
+        console.log(updateFormData, shopName)
         try {
-            const imageName = `shops/${updateFormData.name}/profile/${updateFormData.name}.jpg`
+            const imageName = `shops/${shopName}/profile/${shopName}.jpg`
             console.log(imageName)
             const params = {
                 Bucket: bucketName,
@@ -32,31 +33,43 @@ const EditShop = ({ editShop, setEditShop, shopName, shop }) => {
                 Expires: 60,
                 ContentType: 'image/*'
             }
-            console.log(img)
-            const uploadUrl = await s3.getSignedUrlPromise('putObject', params)
-            await fetch(new Request(uploadUrl, {
-                method: "PUT",
-                body: img[0],
-                headers: new Headers({
-                    "Content-Type": 'image/*',
-                })
-            }))
-            const imageUrl = uploadUrl.split('?')[0]
-            console.log(imageUrl)
-            console.log(updateFormData)
-            const res = await axios.post(constants.uri+"/shop/update",
+            var uploadUrl = ""
+            var imageUrl = shop.img
+            if (img) {
+                uploadUrl = await s3.getSignedUrlPromise('putObject', params)
+                await fetch(new Request(uploadUrl, {
+                    method: "PUT",
+                    body: img[0],
+                    headers: new Headers({
+                        "Content-Type": 'image/*',
+                    })
+                }))
+                imageUrl = uploadUrl.split('?')[0]
+            }
+
+            console.log( {
+                name: updateFormData.name? updateFormData.name : shopName,
+                email: updateFormData.email,
+                ownerName: updateFormData.owner_name,
+                phNumber: updateFormData.ph_number,
+                sellerId: shop.seller_id,
+                img: imageUrl
+            })
+           
+            const res = await axios.post(constants.uri + "/shop/update",
                 {
-                    name: updateFormData.name,
+                    name: updateFormData.name? updateFormData.name : shopName,
                     email: updateFormData.email,
                     ownerName: updateFormData.owner_name,
                     phNumber: updateFormData.ph_number,
-                    sellerId: updateFormData.seller_id,
+                    sellerId: shop.seller_id,
                     img: imageUrl
                 })
             console.log(res)
-            if (res.data) {
-                console.log("------------------------------------------------------------shop updated")
+            if (res.status === 200) {
                 toast.success("Shop Updated")
+                shop = res.data
+                console.log(shop)
                 setEditShop(false)
                 setUpdated(true)
                 window.location.reload(false)
@@ -75,7 +88,8 @@ const EditShop = ({ editShop, setEditShop, shopName, shop }) => {
 
     toast.configure()
     if (updated) {
-        return <Navigate to={`/shop/${updateFormData.name}/home`} />
+        //window.location.reload(false)
+        //return <Navigate to={`/shop/${updateFormData.name}/home`} />
     }
     return (
         <Fragment>
@@ -103,7 +117,7 @@ const EditShop = ({ editShop, setEditShop, shopName, shop }) => {
                                                 <Form.Control type="text"
                                                     placeholder="Shop Name"
                                                     name="name"
-                                                    value={shop.name}
+                                                    value={updateFormData.name ? updateFormData.name : shopName}
                                                     onChange={(e) => setUpdateFormData({ ...updateFormData, name: e.target.value })} />
                                             </Form.Group>
                                         </Form>
@@ -135,7 +149,7 @@ const EditShop = ({ editShop, setEditShop, shopName, shop }) => {
                                                 <Form.Control type="text"
                                                     placeholder="Owner Name"
                                                     name="name"
-                                                    value={updateFormData.ownerName}
+                                                    value={updateFormData.owner_name}
                                                     onChange={(e) => setUpdateFormData({ ...updateFormData, owner_name: e.target.value })} />
                                             </Form.Group>
                                         </Form>
