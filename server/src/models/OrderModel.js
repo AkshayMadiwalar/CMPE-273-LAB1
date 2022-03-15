@@ -5,7 +5,7 @@ const ProductModel = require('./../models/ProductModel')
 const SellerModel = require('./../models/SellerModel')
 const UserModel = require('./../models/UserModel')
 
-exports.placeOrder = ({productId,userId,price,quantity},result) => {
+exports.placeOrder = ({productId,userId,price,quantity,date},result) => {
     const orderId = uuid()
     const orderModel = {}
     orderModel['orderId'] = orderId
@@ -13,6 +13,8 @@ exports.placeOrder = ({productId,userId,price,quantity},result) => {
     orderModel['quantity'] = quantity
     orderModel['price'] = price
     orderModel['userId'] = userId
+    orderModel['date'] = date
+    console.log("------date---",date)
 
     //Get the Product details
     ProductModel.findByProductId({productId},(err,data)=>{
@@ -65,7 +67,8 @@ exports.placeOrder = ({productId,userId,price,quantity},result) => {
                                 owner_name,
                                 owner_email,
                                 ph_number,
-                                shop_img
+                                shop_img,
+                                date
                             ) values (
                                 '${orderModel['orderId']}',
                                 '${orderModel['productId']}',
@@ -85,7 +88,8 @@ exports.placeOrder = ({productId,userId,price,quantity},result) => {
                                 '${orderModel['ownerName']}',
                                 '${orderModel['ownerEmail']}',
                                 '${orderModel['phNumber']}',
-                                '${orderModel['shopImg']}'
+                                '${orderModel['shopImg']}',
+                                '${orderModel['date']}'
                             )`
                             db.query(sql,(err,res)=>{
                                 console.log(err)

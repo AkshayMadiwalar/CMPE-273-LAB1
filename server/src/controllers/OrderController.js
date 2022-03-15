@@ -6,7 +6,10 @@ const SellerModel = require('./../models/SellerModel')
 exports.placeOrder = (req,res) => {
     const {elasticId,productId,userId,price,quantity} = req.body
     try {
-        OrderModel.placeOrder({productId,userId,price,quantity},(err,data)=>{
+        const d = Date(Date.now)
+        const date = d.toString().split(' ')[0] + ' '+ d.toString().split(' ')[1]+ ' ' + d.toString().split(' ')[2] + ' '+ d.toString().split(' ')[3]
+        console.log("----controller date----",date)
+        OrderModel.placeOrder({productId,userId,price,quantity,date},(err,data)=>{
             if(err) return res.status(500).json({message:"Server error"+err})
             if(data){
                 const orderModel = data

@@ -22,6 +22,8 @@ const ProductList = () => {
 
     const [searchParameter, setSearchParameter] = useState()
 
+    const [currency, setCurrency] = useState()
+
     const params = useParams()
 
     const productGrid = (data) => {
@@ -68,6 +70,9 @@ const ProductList = () => {
             const { data } = await axios.get(constants.uri + '/dashboard/products')
             productGrid(data)
         }
+
+        const curr = window.localStorage.getItem('country_currency')
+        setCurrency(curr.split(',')[1])
 
 
     }, [])
@@ -184,8 +189,8 @@ const ProductList = () => {
                     <Button style={{ width: "100%" }} className='rounded-pill' onClick={() => setShowApplyFilter(true)} variant='outline-secondary'>All filters</Button>
                 </Col>
                 <Col sm={5}>
-                    {filters && filters.category.length > 0 ? (<Button className='rounded-pill' variant='outline-secondary'>{filters.category}</Button>) : ""}   
-                    {filters && filters.price < 9999999 && filters.price.length > 0 ? (<Button className='rounded-pill' variant='outline-secondary'>Price Under {filters.price}</Button>) : ""}     
+                    {filters && filters.category.length > 0 ? (<Button className='rounded-pill' variant='outline-secondary'>{filters.category}</Button>) : ""}
+                    {filters && filters.price < 9999999 && filters.price.length > 0 ? (<Button className='rounded-pill' variant='outline-secondary'>Price Under {filters.price}</Button>) : ""}
                 </Col>
                 <Col sm={3}>
                     <Form.Group className="mb-3" id="formGridCheckbox" >
@@ -215,51 +220,53 @@ const ProductList = () => {
                                 <Row>
                                     {productRow.map(product => (
                                         <Col sm={4}>
-                                            <Link to={`/item/${product.product_id}/overview`} style={{ textDecoration: 'none', color: 'black' }}>
-                                                <Card>
-                                                    <Card.Img variant="top" style={{width:"100%",height:"230px"}} src={product.img} />
-                                                    <Card.Body>
-                                                        <Card.Title>
-                                                            <Row>
-                                                                <Col cm={5}>{product.product_name}</Col>
-                                                                <Col sm={5}><span style={{ textAlign: 'right' }}>${product.price}</span></Col>
-                                                                <Col sm={2}>
-                                                                    {favorites.includes(product.product_id) ? (
+                                            <Card>
+                                                <Link to={`/item/${product.product_id}/overview`} style={{ textDecoration: 'none', color: 'black' }}>
+                                                    <Card.Img variant="top" style={{ width: "100%", height: "230px" }} src={product.img} />
+                                                </Link>
+                                                <Card.Body>
+                                                    <Card.Title>
+                                                        <Row>
+                                                            <Col cm={5}>  <Link to={`/item/${product.product_id}/overview`} style={{ textDecoration: 'none', color: 'black' }}>{product.product_name}</Link></Col>
+                                                            <Col sm={5}><span style={{ textAlign: 'right' }}>{product.price}{' '}<span style={{ fontWeight: 'lighter' }}>{currency}</span></span></Col>
+                                                            <Col sm={2}>
+                                                                {favorites.includes(product.product_id) ? (
+                                                                    <OverlayTrigger
+                                                                        placement="bottom"
+                                                                        overlay={<Tooltip id="button-tooltip-2">Remove From favorites</Tooltip>}
+                                                                    >
+                                                                        <Button
+                                                                            variant="light"
+                                                                            className="d-inline-flex align-items-center"
+                                                                            onClick={() => addToFavorites(product)}
+                                                                        >
+                                                                            <i style={{ color: 'red' }} className="fa fa-heart" aria-hidden="true"></i>
+                                                                        </Button>
+                                                                    </OverlayTrigger>
+                                                                ) :
+                                                                    (
                                                                         <OverlayTrigger
                                                                             placement="bottom"
-                                                                            overlay={<Tooltip id="button-tooltip-2">Remove From favorites</Tooltip>}
+                                                                            overlay={<Tooltip id="button-tooltip-2">Add to favorites</Tooltip>}
                                                                         >
                                                                             <Button
                                                                                 variant="light"
                                                                                 className="d-inline-flex align-items-center"
                                                                                 onClick={() => addToFavorites(product)}
                                                                             >
-                                                                                <i style={{ color: 'red' }} className="fa fa-heart" aria-hidden="true"></i>
+                                                                                <i style={{ color: 'lightgrey' }} className="fa fa-heart" aria-hidden="true"></i>
                                                                             </Button>
                                                                         </OverlayTrigger>
-                                                                    ) :
-                                                                        (
-                                                                            <OverlayTrigger
-                                                                                placement="bottom"
-                                                                                overlay={<Tooltip id="button-tooltip-2">Add to favorites</Tooltip>}
-                                                                            >
-                                                                                <Button
-                                                                                    variant="light"
-                                                                                    className="d-inline-flex align-items-center"
-                                                                                    onClick={() => addToFavorites(product)}
-                                                                                >
-                                                                                    <i style={{ color: 'lightgrey' }} className="fa fa-heart" aria-hidden="true"></i>
-                                                                                </Button>
-                                                                            </OverlayTrigger>
-                                                                        )
-                                                                    }
+                                                                    )
+                                                                }
 
-                                                                </Col>
-                                                            </Row>
-                                                            <Row>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row>
 
-                                                            </Row>
-                                                        </Card.Title>
+                                                        </Row>
+                                                    </Card.Title>
+                                                    <Link to={`/item/${product.product_id}/overview`} style={{ textDecoration: 'none', color: 'black' }}>
                                                         <Card.Text>
                                                             <Row>
                                                                 {product.description.length < 30 ? (<span style={{ fontSize: 14 }}>{product.description}</span>) : (<span style={{ fontSize: 14 }}>{product.description.slice(0, 30)}...</span>)}
@@ -269,9 +276,9 @@ const ProductList = () => {
                                                                 <Col><span style={{ fontWeight: 'lighter' }}>{product.sales} Sales</span></Col>
                                                             </Row>
                                                         </Card.Text>
-                                                    </Card.Body>
-                                                </Card>
-                                            </Link>
+                                                    </Link>
+                                                </Card.Body>
+                                            </Card>
                                         </Col>
                                     ))}
                                 </Row>

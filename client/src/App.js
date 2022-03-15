@@ -27,7 +27,7 @@ function App() {
     <Fragment>
       
       <Card style={{margin:0,padding:0}}> 
-        <Card.Body style={{margin:0,padding:0}}>
+        <Card.Body style={{margin:0,padding:0,marginBottom:10,height:"100%"}}>
           <ToastContainer position='top-center' />
           <NavBarLayout />
           <Routes>
@@ -75,11 +75,11 @@ function App() {
           </Routes>
 
         </Card.Body>
-        {/* <Card.Footer style={{backgroundColor:"#1a125c",color:'white'}}>
-            
-        </Card.Footer> */}
-        <footer style={{textAlign:'center',padding:3, position: "fixed", left: 0,bottom: 0,width: "100%"}}>
+        <Card.Footer style={{backgroundColor:"#1a125c",color:'white'}}>
         <Footer />
+        </Card.Footer>
+        <footer style={{textAlign:'center',padding:3, position: "fixed", left: 0,bottom: 0,width: "100%"}}>
+      
         </footer>
       </Card>
 

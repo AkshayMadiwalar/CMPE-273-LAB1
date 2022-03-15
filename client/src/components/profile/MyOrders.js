@@ -5,11 +5,15 @@ import { Card, Button, Row,Col,Image } from 'react-bootstrap'
 
 const MyOrders = () => {
     const [orders, setorders] = useState([])
+    const [currency,setCurrency] = useState()
 
     useEffect(async () => {
         const { data } = await axios.post(constants.uri + "/users/auth")
         const res = await axios.post(constants.uri + '/users/myorders', { id: data.id })
         setorders(res.data)
+
+        const curr = window.localStorage.getItem('country_currency')
+        setCurrency(curr.split(',')[1])
     }, [])
 
     return (
@@ -31,14 +35,16 @@ const MyOrders = () => {
                                                 <br/>
                                                 <Row><Col sm={3}><h5>{order.product_name}</h5></Col> </Row>
                                                 <Row><Col sm={3}><span>Quantity</span></Col> <Col sm={3}><span>{order.quantity}</span></Col></Row>
-                                                <Row><Col sm={3}><span>Price</span></Col><Col sm={3}><span>${order.price}</span></Col></Row>
+                                                <Row><Col sm={3}><span>Price</span></Col><Col sm={3}><span>{order.price}{' '}<span style={{fontWeight:'lighter'}}>{currency}</span></span></Col></Row>
                                                 <br/>
-                                                <Row><Col sm={3}><span>Total Paid</span></Col><Col sm={3}><span>${order.price*order.quantity}</span></Col></Row>
+                                                <Row><Col sm={3}><span>Total Paid</span></Col><Col sm={3}><span>{order.price*order.quantity}{' '}<span style={{fontWeight:'lighter'}}>{currency}</span></span></Col></Row>
                                             </Col>
                                             <Col sm={2}>
                                                 <br/>
                                                 <Row><span>Seller: {order.shop_name}</span></Row>
-                                                
+                                                <br/>
+                                                <br/>
+                                                <Row>{order.date ? (<span>Ordered on {order.date}</span>) : ''}</Row>
                                             </Col>
                                         </Row>
                                     </Card.Text>

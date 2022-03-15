@@ -10,7 +10,7 @@ const Cart = () => {
     const [cartItems, setCartItems] = useState([])
     const [userId,setUserId] = useState()
     const [orderPlaced,setOrderPlaced] = useState(false)
-
+    const [currency,setCurrency] = useState()
     const  [subtotal,setsubtotal] = useState(0)
 
     useEffect(async () => {
@@ -27,6 +27,9 @@ const Cart = () => {
             total = total + item.quantity*item.price
         })
         setsubtotal(total)
+
+        const curr = window.localStorage.getItem('country_currency')
+        setCurrency(curr.split(',')[1])
     }, [])
 
     const placeOrder = async (e) => {
@@ -91,7 +94,7 @@ const Cart = () => {
                                         <Row><h4>{item.product_name}</h4></Row>
                                         <Row>
                                             <Col><span>Price per Unit:</span></Col>
-                                            <Col> <span>${item.price}</span></Col>
+                                            <Col> <span>{item.price}{' '}<span style={{fontWeight:'lighter'}}>{currency}</span></span></Col>
                                         </Row>
                                         <Row>
                                             <Col><span>Quantity:</span></Col>
@@ -123,16 +126,16 @@ const Cart = () => {
                             <hr/>
                             <Row>
                                 <Col><h6>Sub Total:</h6></Col>
-                                <Col><span style={{fontWeight:'lighter'}}>${subtotal}</span></Col>
+                                <Col><span style={{fontWeight:'lighter'}}>{subtotal}{' '}<span style={{fontWeight:'lighter'}}>{currency}</span></span></Col>
                             </Row>
                             <Row>
                                 <Col><h6>Delivery:</h6></Col>
-                                <Col><span style={{fontWeight:'lighter'}}>$0.00</span></Col>
+                                <Col><span style={{fontWeight:'lighter'}}>0.00{' '}<span style={{fontWeight:'lighter'}}>{currency}</span></span></Col>
                             </Row>
                             <br />
                             <Row>
                                 <Col><h6>Total:</h6></Col>
-                                <Col><span style={{fontWeight:'lighter'}}>${subtotal}</span></Col>
+                                <Col><span style={{fontWeight:'lighter'}}>{subtotal}{' '}<span style={{fontWeight:'lighter'}}>{currency}</span></span></Col>
                             </Row>
                             <br/>
                             <Row>

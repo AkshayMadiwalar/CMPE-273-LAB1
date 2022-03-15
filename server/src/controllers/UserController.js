@@ -7,7 +7,6 @@ const bcrypt = require('bcrypt')
 
 exports.createUser = async (req, res) => {
     const { registrationfirstName, registrationemail, registrationpassword } = req.body
-    console.log(registrationemail," ---------------------")
     try {
         UserModel.findByEmail({ email:registrationemail }, async (err, data) => {
             if (err) res.status(500).json({ message: "Server error" })

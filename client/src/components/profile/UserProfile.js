@@ -13,13 +13,16 @@ const UserProfile = props => {
     const [profile, setProfile] = useState({})
     const [favorites, setFavorites] = useState()
     const [searchFav,setSearchFav] = useState()
+    const [currency,setCurrency] = useState()
 
     useEffect(async () => {
         const { data } = await axios.post(constants.uri+"/users/auth")
-        console.log(data)
         setProfile(data)
         const res = await axios.post(constants.uri+'/users/myFavorites', { id: data.id })
         setProductGrid(res.data)
+        const curr = window.localStorage.getItem('country_currency')
+        setCurrency(curr.split(',')[1])
+
     }, [])
 
     const setProductGrid = (data) => {
@@ -51,8 +54,24 @@ const UserProfile = props => {
 
     const search = async () => {
         console.log(searchFav)
-        // const {data} = await axios.post('/users/myFavorites', { id: profile.id })
-        // console.log(data.filter(item=> item.product_name == name))
+        const {data} = await axios.post(constants.uri+'/users/myFavorites', { id: profile.id })
+        var favs = []
+        favs  =data
+        favs = favs.filter(item=> item.product_name === searchFav)
+        setProductGrid(favs)
+    }
+
+    const onChangeSearchFav = async (e) => {
+        e.preventDefault()
+        if(e.target.value.length == 0){
+            console.log(e.target.value,"no value")
+            setSearchFav("")
+            const res = await axios.post(constants.uri+'/users/myFavorites', { id: profile.id })
+            setProductGrid(res.data)
+        }
+        else{
+            setSearchFav(e.target.value)
+        }
     }
 
 
@@ -102,7 +121,7 @@ const UserProfile = props => {
                                     aria-label="Search"
                                     name="searchFav"
                                     value={searchFav}
-                                    onChange={(e)=>setSearchFav(searchFav)}
+                                    onChange={(e)=>onChangeSearchFav(e)}
                                 />
                                 <Button variant="outline-warning" onClick={()=>search()}> <i class="fa fa-search" aria-hidden="true"></i></Button>
                             </Form>
@@ -118,7 +137,7 @@ const UserProfile = props => {
                                 <Card.Body>
                                     <Card.Text>
                                         <Card style={{ width: '15rem' }}>
-                                            <Card.Img variant="top" src={item.img ? item.img : defaultProfileImg} />
+                                            <Card.Img variant="top" style={{ width: "100%", height: "230px" }} src={item.img ? item.img : defaultProfileImg} />
                                             <Card.Body>
                                                 <Card.Title>
                                                     <Row>
@@ -144,7 +163,7 @@ const UserProfile = props => {
                                                 <Card.Text>
                                                     <Row>
                                                         <Col>
-                                                            <span style={{ fontWeight: 'bold' }}>${item.price}</span>
+                                                            <span style={{ fontWeight: 'bold' }}>{item.price}{' '}<span style={{fontWeight:'lighter'}}>{currency}</span></span>
                                                         </Col>
                                                         <Col>
                                                             {item.quantity > 0 ? <span>In Stock</span> : <span style={{ color: 'red' }}>Out of Stock</span>}
@@ -161,6 +180,13 @@ const UserProfile = props => {
                     </Row>
 
                 ))}
+
+                {favorites.length == 0 && (
+                    <Row style={{textAlign:'center',margin:"10%"}}>
+                        <br/>
+                        <h4>Sorry! Favorites not found</h4>
+                    </Row>
+                )}
 
 
             </Card>

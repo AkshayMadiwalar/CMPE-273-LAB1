@@ -19,3 +19,5 @@ const PORT = 8585
 app.listen(PORT,(req,res)=>{
     console.log("Srever running on port 8585")
 })
+
+module.exports = app

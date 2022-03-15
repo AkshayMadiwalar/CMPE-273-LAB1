@@ -17,6 +17,8 @@ const Dashboard = () => {
 
     const [user, setUser] = useState()
 
+    const [currency, setCurrency] = useState()
+
     useEffect(async () => {
 
         //Set user id from access token stored in localstorage
@@ -43,6 +45,8 @@ const Dashboard = () => {
         }
         setProducts(grid)
 
+        const curr = window.localStorage.getItem('country_currency')
+        setCurrency(curr.split(',')[1])
 
         const fav = await axios.post(constants.uri + '/users/myFavorites', { id: res.data.id })
         console.log(fav.data)
@@ -153,51 +157,54 @@ const Dashboard = () => {
                         <Row>
                             {productRow.map(product => (
                                 <Col sm={4}>
-                                    <Link to={`/item/${product.product_id}/overview`} style={{ textDecoration: 'none', color: 'black' }}>
-                                        <Card className='product-card'>
-                                            <Card.Img variant="top" style={{width:"100%",height:"230px"}} src={product.img} />
-                                            <Card.Body>
-                                                <Card.Title>
-                                                    <Row>
-                                                        <Col cm={5}>{product.product_name}</Col>
-                                                        <Col sm={5}><span style={{ textAlign: 'right' }}>${product.price}</span></Col>
-                                                        <Col sm={2}>
-                                                            {favorites.includes(product.product_id) ? (
+                                    <Card className='product-card'>
+                                        <Link to={`/item/${product.product_id}/overview`} style={{ textDecoration: 'none', color: 'black' }}>
+                                            <Card.Img variant="top" style={{ width: "100%", height: "230px" }} src={product.img} />
+                                        </Link>
+                                        <Card.Body>
+                                            <Card.Title>
+                                                <Row>
+                                                    
+                                                    <Col cm={5}><Link to={`/item/${product.product_id}/overview`} style={{ textDecoration: 'none', color: 'black' }}>{product.product_name}</Link></Col>
+                                                    <Col sm={5}><span style={{ textAlign: 'right' }}>{product.price}{' '}<span style={{ fontWeight: 'lighter' }}>{currency}</span></span></Col>
+                                                    <Col sm={2}>
+                                                        {favorites.includes(product.product_id) ? (
+                                                            <OverlayTrigger
+                                                                placement="bottom"
+                                                                overlay={<Tooltip id="button-tooltip-2">Remove From favorites</Tooltip>}
+                                                            >
+                                                                <Button
+                                                                    variant="light"
+                                                                    className="d-inline-flex align-items-center"
+                                                                    onClick={() => addToFavorites(product)}
+                                                                >
+                                                                    <i style={{ color: 'red' }} className="fa fa-heart" aria-hidden="true"></i>
+                                                                </Button>
+                                                            </OverlayTrigger>
+                                                        ) :
+                                                            (
                                                                 <OverlayTrigger
                                                                     placement="bottom"
-                                                                    overlay={<Tooltip id="button-tooltip-2">Remove From favorites</Tooltip>}
+                                                                    overlay={<Tooltip id="button-tooltip-2">Add to favorites</Tooltip>}
                                                                 >
                                                                     <Button
                                                                         variant="light"
                                                                         className="d-inline-flex align-items-center"
                                                                         onClick={() => addToFavorites(product)}
                                                                     >
-                                                                        <i style={{ color: 'red' }} className="fa fa-heart" aria-hidden="true"></i>
+                                                                        <i style={{ color: 'lightgrey' }} className="fa fa-heart" aria-hidden="true"></i>
                                                                     </Button>
                                                                 </OverlayTrigger>
-                                                            ) :
-                                                                (
-                                                                    <OverlayTrigger
-                                                                        placement="bottom"
-                                                                        overlay={<Tooltip id="button-tooltip-2">Add to favorites</Tooltip>}
-                                                                    >
-                                                                        <Button
-                                                                            variant="light"
-                                                                            className="d-inline-flex align-items-center"
-                                                                            onClick={() => addToFavorites(product)}
-                                                                        >
-                                                                            <i style={{ color: 'lightgrey' }} className="fa fa-heart" aria-hidden="true"></i>
-                                                                        </Button>
-                                                                    </OverlayTrigger>
-                                                                )
-                                                            }
+                                                            )
+                                                        }
 
-                                                        </Col>
-                                                    </Row>
-                                                    <Row>
+                                                    </Col>
+                                                </Row>
+                                                <Row>
 
-                                                    </Row>
-                                                </Card.Title>
+                                                </Row>
+                                            </Card.Title>
+                                            <Link to={`/item/${product.product_id}/overview`} style={{ textDecoration: 'none', color: 'black' }}>
                                                 <Card.Text>
                                                     <Row>
                                                         {product && product.description.length < 30 ? (<span style={{ fontSize: 14 }}>product.description</span>) : (<span style={{ fontSize: 14 }}>{product.description.slice(0, 30)}...</span>)}
@@ -206,9 +213,9 @@ const Dashboard = () => {
                                                         <Col>{product && product.quantity > 0 ? (<span>In Stock ({product.quantity} available)</span>) : (<span style={{ color: 'red' }}>Out of Stock</span>)}</Col>
                                                     </Row>
                                                 </Card.Text>
-                                            </Card.Body>
-                                        </Card>
-                                    </Link>
+                                            </Link>
+                                        </Card.Body>
+                                    </Card>
                                 </Col>
                             ))}
                         </Row>

@@ -6,7 +6,6 @@ exports.createUser = ({registrationfirstName,registrationemail,encrypted},result
     const sql = `insert into users(id,first_name, email, password) 
                 values('${id}','${registrationfirstName}','${registrationemail}','${encrypted}')`
     db.query(sql,(err,res)=>{
-        console.log(err)
         if(err){
             result(err,null)
         }else{

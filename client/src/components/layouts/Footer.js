@@ -16,6 +16,7 @@ const Footer = () => {
         setCurrency(currency)
         window.localStorage.setItem("country_currency",[country,currency])
         setSHowCountrySettings(false)
+        window.location.reload(false)
     }
 
     useEffect(()=>{
