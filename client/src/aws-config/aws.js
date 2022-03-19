@@ -1,10 +1,10 @@
 import aws from 'aws-sdk'
 
 const config = {
-    "bucketName":"cmpe-273-etsy",
-    "region": "ap-south-1",
-    "accessKeyId": "AKIAROAVIZKNNU6J2G4X",
-    "secretAccessKey": "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",
+    "bucketName":process.env.REACT_APP_AWS_S3_BUCKET_NAME,
+    "region": process.env.REACT_APP_AWS_REGION,
+    "accessKeyId": process.env.REACT_APP_AWS_ACCESS_KEY,
+    "secretAccessKey": process.env.REACT_APP_AWS_SECRET_KEY,
     "signatureVersion": "v4"
 }
 

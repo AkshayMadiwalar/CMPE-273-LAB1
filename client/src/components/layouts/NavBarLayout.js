@@ -56,6 +56,7 @@ const NavBarLayout = props => {
 
   if (search) {
     return <Navigate to={`/products/${searchParameter}`} />
+    
   }
 
   return (

@@ -36,6 +36,7 @@ const EditShop = ({ editShop, setEditShop, shopName, shop }) => {
             var uploadUrl = ""
             var imageUrl = shop.img
             if (img) {
+                console.log("-------s3",s3)
                 uploadUrl = await s3.getSignedUrlPromise('putObject', params)
                 await fetch(new Request(uploadUrl, {
                     method: "PUT",
@@ -72,7 +73,7 @@ const EditShop = ({ editShop, setEditShop, shopName, shop }) => {
                 console.log(shop)
                 setEditShop(false)
                 setUpdated(true)
-                window.location.reload(false)
+               // window.location.reload(false)
             }
         } catch (error) {
             console.log(error)
