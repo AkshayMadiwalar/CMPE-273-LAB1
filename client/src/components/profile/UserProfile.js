@@ -11,7 +11,7 @@ const UserProfile = props => {
     const arr = [1, 2, 3, 4, 5, 6, 7]
 
     const [profile, setProfile] = useState({})
-    const [favorites, setFavorites] = useState()
+    const [favorites, setFavorites] = useState([])
     const [searchFav,setSearchFav] = useState()
     const [currency,setCurrency] = useState()
 
@@ -20,6 +20,8 @@ const UserProfile = props => {
         setProfile(data)
         const res = await axios.post(constants.uri+'/users/myFavorites', { id: data.id })
         setProductGrid(res.data)
+        
+        
         const curr = window.localStorage.getItem('country_currency')
         setCurrency(curr.split(',')[1])
 
