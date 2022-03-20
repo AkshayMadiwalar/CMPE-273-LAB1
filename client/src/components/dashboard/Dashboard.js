@@ -95,7 +95,7 @@ const Dashboard = () => {
                 <Card.Body style={{ backgroundColor: "#FDEBD2", height: "100%" }}>
                     <Row>
                         {user && (
-                            <h2 style={{ textAlign: 'center' }}>Welcome back Akshay!</h2>
+                            <h2 style={{ textAlign: 'center' }}>Welcome  {user.first_name}!</h2>
                         )}
 
                         <h3 style={{ textAlign: 'center' }}>Explore  our unique Products! Shop Now.</h3>
