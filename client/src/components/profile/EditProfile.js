@@ -147,7 +147,7 @@ const EditProfile = () => {
 
                         <Row style={{ margin: 20 }}>
                             <Col sm={6}>
-                                Your Name: Akshay Madiwalar
+                                Your Name: {firstName}
                             </Col>
                             <Col> <span style={{ textDecoration: 'underline', fontWeight: 'bold', cursor: 'pointer' }} onClick={() => setEditName(true)}>Change Name</span></Col>
                         </Row>
